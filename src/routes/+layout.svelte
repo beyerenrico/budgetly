@@ -16,6 +16,7 @@
 		<li><a href="/kategorien">Kategorien</a></li>
 		<li><a href="/posten">Posten</a></li>
 		<li><a href="/haushaltsbuecher" role="button" class="medium">Haushaltsbuch erstellen</a></li>
+		<li><a href="/login" role="button" class="medium">Anmelden</a></li>
 	</ul>
 	<ul class="hamburger">
 		<li>
