@@ -1,11 +1,13 @@
 <script>
 	import { Plus } from 'tabler-icons-svelte';
+
+	export let data;
 </script>
 
 <header>
 	<div class="container">
 		<hgroup>
-			<h1>Dein Haushaltsbuch</h1>
+			<h1>Willkommen zurück, {data.session.user.email}!</h1>
 			<h2>Behalte deine Finanzen im Blick!</h2>
 		</hgroup>
 		<p>
@@ -126,5 +128,9 @@
 		@media (min-width: 1200px) {
 			grid-template-columns: repeat(4, 1fr);
 		}
+	}
+
+	.auth-buttons {
+		text-align: center;
 	}
 </style>

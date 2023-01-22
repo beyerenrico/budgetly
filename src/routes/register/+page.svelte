@@ -3,7 +3,7 @@
 <main>
 	<div class="container">
 		<h1>Registrieren</h1>
-		<form action="">
+		<form action="?/register" method="POST">
 			<label for="email">
 				E-Mail-Adresse
 				<input type="email" name="email" id="email" />
@@ -12,7 +12,7 @@
 				Passwort
 				<input type="password" name="password" id="password" placeholder="********" />
 			</label>
-			<button type="submit">Login</button>
+			<button type="submit">Benutzer erstellen</button>
 			<small>
 				<a href="/login"> Sie haben bereits einen Account? Jetzt anmelden! </a>
 			</small>

@@ -1,9 +1,10 @@
-<script></script>
+<script>
+</script>
 
 <main>
 	<div class="container">
 		<h1>Anmelden</h1>
-		<form action="">
+		<form action="?/login" method="POST">
 			<label for="email">
 				E-Mail-Adresse
 				<input type="email" name="email" id="email" />

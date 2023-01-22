@@ -1,74 +1,70 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
 model User {
-  id          Int          @id @default(autoincrement())
-  firstName   String
-  lastName    String
+  id          String       @id @default(uuid())
   email       String
-  budgetBooks BudgetBook[]
   createdAt   DateTime     @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime?
+  budgetBooks BudgetBook[]
 }
 
 model BudgetBook {
-  id          Int      @id @default(autoincrement())
+  id          String    @id @default(uuid())
   title       String
   description String
   year        Int
+  userId      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime?
+  user        User      @relation(fields: [userId], references: [id])
   items       Item[]
-  user        User     @relation(fields: [userId], references: [id])
-  userId      Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime
 }
 
 model Category {
-  id          Int      @id @default(autoincrement())
+  id          String    @id @default(uuid())
   title       String
   description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime?
   items       Item[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime
 }
 
 model Item {
-  id           Int             @id @default(autoincrement())
+  id           String          @id @default(uuid())
   title        String
   description  String
-  months       ItemsInMonths[]
   type         Type            @default(EXPENSE)
-  budgetBook   BudgetBook      @relation(fields: [budgetBookId], references: [id])
-  budgetBookId Int
-  category     Category        @relation(fields: [categoryId], references: [id])
-  categoryId   Int
+  budgetBookId String
+  categoryId   String
   createdAt    DateTime        @default(now())
-  updatedAt    DateTime
+  updatedAt    DateTime?
+  budgetBook   BudgetBook      @relation(fields: [budgetBookId], references: [id])
+  category     Category        @relation(fields: [categoryId], references: [id])
+  months       ItemsInMonths[]
 }
 
 model Month {
-  id    Int             @id @default(autoincrement())
+  id    String          @id @default(uuid())
   slug  String          @unique
   title String
   items ItemsInMonths[]
 }
 
 model ItemsInMonths {
-  item       Item     @relation(fields: [itemId], references: [id])
-  itemId     Int // relation scalar field (used in the `@relation` attribute above)
-  month      Month    @relation(fields: [monthId], references: [id])
-  monthId    Int // relation scalar field (used in the `@relation` attribute above)
+  itemId     String
+  monthId    String
   assignedAt DateTime @default(now())
   assignedBy String
+  item       Item     @relation(fields: [itemId], references: [id])
+  month      Month    @relation(fields: [monthId], references: [id])
 
   @@id([itemId, monthId])
 }
