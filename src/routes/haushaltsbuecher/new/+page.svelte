@@ -9,7 +9,7 @@
 </header>
 <main>
 	<div class="container-fluid">
-		<form action="" method="POST">
+		<form action="?/create" method="POST">
 			<div class="container">
 				<label for="title">
 					Titel

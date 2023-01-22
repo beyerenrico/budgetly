@@ -1,5 +1,9 @@
 <script>
 	import { ArrowUpRight, Trash } from 'tabler-icons-svelte';
+
+	export let data;
+
+	$: ({ months, categories, budgetBooks } = data);
 </script>
 
 <header>
@@ -10,7 +14,7 @@
 </header>
 <main>
 	<div class="container-fluid">
-		<form action="" method="POST">
+		<form action="?/create" method="POST">
 			<div class="container">
 				<label for="title">
 					Titel
@@ -20,23 +24,30 @@
 					Beschreibung
 					<textarea name="description" id="description" cols="30" rows="5" />
 				</label>
+
+				<label for="budgetBook"> Haushaltsbuch </label>
+				<select name="budgetBook" id="budgetBook">
+					<option value="">Haushaltsbuch auswählen</option>
+					{#each budgetBooks as budgetBook}
+						<option value={budgetBook.id}>{budgetBook.title}</option>
+					{/each}
+				</select>
 				<div class="grid">
 					<div>
 						<label for="type"> Typ </label>
 						<select name="type" id="type">
 							<option value="">Typ auswählen</option>
-							<option value="ausgabe" selected>Ausgabe</option>
-							<option value="einnahme">Einnahme</option>
+							<option value="EXPENSE" selected>Ausgabe</option>
+							<option value="INCOME">Einnahme</option>
 						</select>
 					</div>
 					<div>
 						<label for="category"> Kategorie </label>
 						<select name="category" id="category">
 							<option value="">Kategorie auswählen</option>
-							<option value="sparen">Sparen</option>
-							<option value="versicherung">Versicherung</option>
-							<option value="lebenshaltung" selected>Lebenshaltung</option>
-							<option value="variabel">Variabel</option>
+							{#each categories as category}
+								<option value={category.id}>{category.title}</option>
+							{/each}
 						</select>
 						<small>
 							<a href="/kategorien/new" target="_blank">
@@ -50,151 +61,24 @@
 					<legend>Monate</legend>
 
 					<div class="grid">
-						<div>
-							<label for="april">
-								<input type="checkbox" name="months" id="april" value="APRIL" checked />
-								April
-							</label>
-						</div>
-						<div>
-							<input type="number" placeholder="10.99" />
-						</div>
-					</div>
-
-					<div class="grid">
-						<div>
-							<label for="april">
-								<input type="checkbox" name="months" id="april" value="APRIL" />
-								April
-							</label>
-						</div>
-						<div>
-							<input type="number" placeholder="10.99" disabled />
-						</div>
-					</div>
-
-					<div class="grid">
-						<div>
-							<label for="april">
-								<input type="checkbox" name="months" id="april" value="APRIL" />
-								April
-							</label>
-						</div>
-						<div>
-							<input type="number" placeholder="10.99" disabled />
-						</div>
-					</div>
-
-					<div class="grid">
-						<div>
-							<label for="april">
-								<input type="checkbox" name="months" id="april" value="APRIL" />
-								April
-							</label>
-						</div>
-						<div>
-							<input type="number" placeholder="10.99" disabled />
-						</div>
-					</div>
-
-					<div class="grid">
-						<div>
-							<label for="april">
-								<input type="checkbox" name="months" id="april" value="APRIL" />
-								April
-							</label>
-						</div>
-						<div>
-							<input type="number" placeholder="10.99" disabled />
-						</div>
-					</div>
-
-					<div class="grid">
-						<div>
-							<label for="april">
-								<input type="checkbox" name="months" id="april" value="APRIL" />
-								April
-							</label>
-						</div>
-						<div>
-							<input type="number" placeholder="10.99" disabled />
-						</div>
-					</div>
-
-					<div class="grid">
-						<div>
-							<label for="april">
-								<input type="checkbox" name="months" id="april" value="APRIL" />
-								April
-							</label>
-						</div>
-						<div>
-							<input type="number" placeholder="10.99" disabled />
-						</div>
-					</div>
-
-					<div class="grid">
-						<div>
-							<label for="april">
-								<input type="checkbox" name="months" id="april" value="APRIL" />
-								April
-							</label>
-						</div>
-						<div>
-							<input type="number" placeholder="10.99" disabled />
-						</div>
-					</div>
-
-					<div class="grid">
-						<div>
-							<label for="april">
-								<input type="checkbox" name="months" id="april" value="APRIL" />
-								April
-							</label>
-						</div>
-						<div>
-							<input type="number" placeholder="10.99" disabled />
-						</div>
-					</div>
-
-					<div class="grid">
-						<div>
-							<label for="april">
-								<input type="checkbox" name="months" id="april" value="APRIL" />
-								April
-							</label>
-						</div>
-						<div>
-							<input type="number" placeholder="10.99" disabled />
-						</div>
-					</div>
-
-					<div class="grid">
-						<div>
-							<label for="april">
-								<input type="checkbox" name="months" id="april" value="APRIL" />
-								April
-							</label>
-						</div>
-						<div>
-							<input type="number" placeholder="10.99" disabled />
-						</div>
-					</div>
-
-					<div class="grid">
-						<div>
-							<label for="april">
-								<input type="checkbox" name="months" id="april" value="APRIL" />
-								April
-							</label>
-						</div>
-						<div>
-							<input type="number" placeholder="10.99" disabled />
-						</div>
+						{#each months as month}
+							<div>
+								<label for={month.id}>
+									{month.title}
+									<input
+										type="number"
+										name={`months:${month.id}`}
+										id={month.id}
+										placeholder="10,99"
+										value=""
+									/>
+								</label>
+							</div>
+						{/each}
 					</div>
 				</fieldset>
 				<p>
-					<button type="submit">Aktualisieren</button>
+					<button type="submit">Erstellen</button>
 
 					<button class="outline danger" data-tooltip="Löschen">
 						<Trash strokeWidth={1} />
@@ -221,11 +105,11 @@
 
 	fieldset {
 		.grid {
-			grid-template-columns: 75px auto;
+			grid-template-columns: 1fr;
 			align-items: center;
 
 			@media screen and (min-width: 768px) {
-				grid-template-columns: 20% auto;
+				grid-template-columns: repeat(3, 1fr);
 			}
 
 			div {

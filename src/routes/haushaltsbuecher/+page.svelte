@@ -1,5 +1,9 @@
 <script>
 	import { Pencil } from 'tabler-icons-svelte';
+
+	export let data;
+
+	$: ({ budgetBooks } = data);
 </script>
 
 <header>
@@ -25,28 +29,19 @@
 			</form>
 		</section>
 		<section id="results">
-			<h2 class="icon">
-				<a href="/haushaltsbuecher/1"> Haushaltsbuch 2019 </a>
-				<a
-					href="/haushaltsbuecher/1/edit"
-					data-tooltip="Haushaltsbuch bearbeiten"
-					role="button"
-					class="small"
-				>
-					<Pencil strokeWidth={1} />
-				</a>
-			</h2>
-			<h2 class="icon">
-				<a href="/haushaltsbuecher/2"> Haushaltsbuch 2020 </a>
-				<a
-					href="/haushaltsbuecher/2/edit"
-					data-tooltip="Haushaltsbuch bearbeiten"
-					role="button"
-					class="small"
-				>
-					<Pencil strokeWidth={1} />
-				</a>
-			</h2>
+			{#each budgetBooks as budgetBook}
+				<h2 class="icon">
+					<a href={`/haushaltsbuecher/${budgetBook.id}`}> {budgetBook.title} </a>
+					<a
+						href={`/haushaltsbuecher/${budgetBook.id}/edit`}
+						data-tooltip="Haushaltsbuch bearbeiten"
+						role="button"
+						class="small"
+					>
+						<Pencil strokeWidth={1} />
+					</a>
+				</h2>
+			{/each}
 		</section>
 	</div>
 </main>

@@ -27,8 +27,6 @@ export const actions = {
 
 		const { user } = data;
 
-		console.log(user);
-
 		try {
 			await prisma.user.create({
 				data: {

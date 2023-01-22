@@ -1,16 +1,22 @@
 <script>
 	import { Trash } from 'tabler-icons-svelte';
+
+	export let data;
+
+	$: ({ budgetBook } = data);
 </script>
 
 <header>
-	<hgroup>
-		<h1>Sie bearbeiten: Haushaltsbuch 2019</h1>
-		<h2>Lorem ipsum dolor sit amet</h2>
-	</hgroup>
+	<div class="container">
+		<hgroup>
+			<h1>Sie bearbeiten: {budgetBook.title}</h1>
+			<h2>{budgetBook.description}</h2>
+		</hgroup>
+	</div>
 </header>
 <main>
 	<div class="container-fluid">
-		<form action="" method="POST">
+		<form action="?/update" method="POST">
 			<div class="container">
 				<label for="title">
 					Titel
@@ -20,13 +26,13 @@
 						name="title"
 						placeholder="Titel"
 						required
-						value="Haushaltsbuch 2019"
+						value={budgetBook.title}
 					/>
 				</label>
 				<label for="description">
 					Beschreibung
 					<textarea name="description" id="description" cols="30" rows="5"
-						>Lorem ipsum dolor sit amet</textarea
+						>{budgetBook.description}</textarea
 					>
 				</label>
 				<label for="year">
@@ -36,12 +42,11 @@
 						name="year"
 						id="year"
 						placeholder={new Date().getFullYear()}
-						value="2019"
+						value={budgetBook.year}
 					/>
 				</label>
 				<p>
 					<button type="submit">Aktualisieren</button>
-
 					<button class="outline danger" data-tooltip="Löschen">
 						<Trash strokeWidth={1} />
 					</button>

@@ -1,5 +1,9 @@
 <script>
 	import { Pencil, Plus } from 'tabler-icons-svelte';
+
+	export let data;
+
+	$: ({ budgetBooks } = data);
 </script>
 
 <header>
@@ -25,8 +29,9 @@
 					<div>
 						<select name="budgetBook" id="budgetBook">
 							<option value="">Alle Haushaltsbücher anzeigen</option>
-							<option value="1">Haushaltsbuch 2019</option>
-							<option value="2">Haushaltsbuch 2020</option>
+							{#each budgetBooks as budgetBook}
+								<option value={budgetBook.id}>{budgetBook.title}</option>
+							{/each}
 						</select>
 					</div>
 
@@ -37,116 +42,42 @@
 			</form>
 		</section>
 		<section id="results">
-			<section id="results1">
-				<h2 class="icon">
-					Haushaltsbuch 2019
-					<a href="/posten/new" data-tooltip="Posten hinzufügen" role="button" class="small">
-						<Plus strokeWidth={1} />
-					</a>
-				</h2>
+			{#each budgetBooks as budgetBook}
+				<section id={budgetBook.id}>
+					<h2 class="icon">
+						{budgetBook.title}
+						<a href="/posten/new" data-tooltip="Posten hinzufügen" role="button" class="small">
+							<Plus strokeWidth={1} />
+						</a>
+					</h2>
 
-				<details>
-					<summary>Miete</summary>
-					<p>
-						Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero culpa excepturi,
-						explicabo commodi autem cupiditate consequuntur perferendis placeat officia quod libero
-						enim velit earum laborum, nulla saepe dolor dicta odit.
-					</p>
-					<ul>
-						<li>Typ: Ausgabe</li>
-						<li>Kategorie: Lebenshaltung</li>
-						<li>
-							Monate: Januar, Februar, März, April, Mai, Juni, Juli, August, September, Oktober,
-							November, Dezember
-						</li>
-						<li>Summe: 820,00 €</li>
-					</ul>
-					<a
-						href="/posten/1/edit"
-						role="button"
-						class="outline small"
-						data-tooltip="Posten bearbeiten"
-					>
-						<Pencil strokeWidth={1} />
-					</a>
-				</details>
-				<details>
-					<summary>Strom</summary>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores, dolorum.</p>
-					<ul>
-						<li>Typ: Ausgabe</li>
-						<li>Kategorie: Lebenshaltung</li>
-						<li>
-							Monate: Januar, Februar, März, April, Mai, Juni, Juli, August, September, Oktober,
-							November, Dezember
-						</li>
-						<li>Summe: 150,00 €</li>
-					</ul>
-					<a
-						href="/posten/1/edit"
-						role="button"
-						class="outline small"
-						data-tooltip="Posten bearbeiten"
-					>
-						<Pencil strokeWidth={1} />
-					</a>
-				</details>
-			</section>
-			<section id="results2">
-				<h2 class="icon">
-					Haushaltsbuch 2020
-					<a href="/posten/new" data-tooltip="Posten hinzufügen" role="button" class="small">
-						<Plus strokeWidth={1} />
-					</a>
-				</h2>
-
-				<details>
-					<summary>Miete</summary>
-					<p>
-						Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero culpa excepturi,
-						explicabo commodi autem cupiditate consequuntur perferendis placeat officia quod libero
-						enim velit earum laborum, nulla saepe dolor dicta odit.
-					</p>
-					<ul>
-						<li>Typ: Ausgabe</li>
-						<li>Kategorie: Lebenshaltung</li>
-						<li>
-							Monate: Januar, Februar, März, April, Mai, Juni, Juli, August, September, Oktober,
-							November, Dezember
-						</li>
-						<li>Summe: 820,00 €</li>
-					</ul>
-					<a
-						href="/posten/1/edit"
-						role="button"
-						class="outline small"
-						data-tooltip="Posten bearbeiten"
-					>
-						<Pencil strokeWidth={1} />
-					</a>
-				</details>
-				<details>
-					<summary>Strom</summary>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores, dolorum.</p>
-					<ul>
-						<li>Typ: Ausgabe</li>
-						<li>Kategorie: Lebenshaltung</li>
-						<li>
-							Monate: Januar, Februar, März, April, Mai, Juni, Juli, August, September, Oktober,
-							November, Dezember
-						</li>
-						<li>Summe: 150,00 €</li>
-					</ul>
-					<a
-						href="/posten/1/edit"
-						role="button"
-						class="outline small"
-						data-tooltip="Posten bearbeiten"
-					>
-						<Pencil strokeWidth={1} />
-					</a>
-				</details>
-			</section>
+					{#each budgetBook.items as item}
+						<details>
+							<summary>{item.title}</summary>
+							<p>{item.description}</p>
+							<ul>
+								<li>Typ: {item.type}</li>
+								<li>Kategorie: {item.category.title}</li>
+								<ul>
+									{#each item.months as joinElement}
+										<li>
+											{joinElement.month.title}: {joinElement.value}
+										</li>
+									{/each}
+								</ul>
+							</ul>
+							<a
+								href={`/posten/${item.id}/edit`}
+								role="button"
+								class="outline small"
+								data-tooltip="Posten bearbeiten"
+							>
+								<Pencil strokeWidth={1} />
+							</a>
+						</details>
+					{/each}
+				</section>
+			{/each}
 		</section>
 	</div>
 </main>

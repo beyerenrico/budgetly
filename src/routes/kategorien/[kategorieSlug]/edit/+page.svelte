@@ -1,16 +1,20 @@
 <script>
+	import { Trash } from 'tabler-icons-svelte';
+
+	export let data;
+
+	$: ({ category } = data);
 </script>
 
 <header>
 	<hgroup>
-		<h1 class="icon">Sie bearbeiten die Kategorie: Lebenshaltung</h1>
+		<h1 class="icon">Sie bearbeiten die Kategorie: {category.title}</h1>
 		<h2>Lorem ipsum dolor sit amet</h2>
 	</hgroup>
-	<a href="/kategorien/new" role="button">Kategorie erstellen</a>
 </header>
 <main>
 	<div class="container-fluid">
-		<form action="" method="POST">
+		<form action="?/update" method="POST">
 			<div class="container">
 				<label for="title">
 					Titel
@@ -20,23 +24,41 @@
 						name="title"
 						placeholder="Titel"
 						required
-						value="Lebenshaltung"
+						value={category.title}
 					/>
 				</label>
 				<label for="description">
 					Beschreibung
 					<textarea name="description" id="description" cols="30" rows="5"
-						>Lorem ipsum dolor sit amet consectetur adipisicing elit.</textarea
+						>{category.description}</textarea
 					>
 				</label>
-				<button type="submit">Erstellen</button>
+				<p>
+					<button type="submit">Aktualisieren</button>
+					<button class="outline danger" data-tooltip="Löschen">
+						<Trash strokeWidth={1} />
+					</button>
+				</p>
 			</div>
 		</form>
 	</div>
 </main>
 
-<style>
+<style lang="scss">
 	header {
 		text-align: center;
+	}
+
+	form {
+		p {
+			display: grid;
+			grid-template-columns: auto 70px;
+			align-items: center;
+			gap: 1rem;
+		}
+
+		button {
+			margin-bottom: 0;
+		}
 	}
 </style>

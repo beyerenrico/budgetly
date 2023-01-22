@@ -1,5 +1,9 @@
 <script>
 	import { Pencil } from 'tabler-icons-svelte';
+
+	export let data;
+
+	$: ({ categories } = data);
 </script>
 
 <header>
@@ -25,28 +29,19 @@
 			</form>
 		</section>
 		<section id="results">
-			<h2 class="icon">
-				<a href="/kategorien/lebenshaltung/edit"> Lebenshaltung </a>
-				<a
-					href="/kategorien/lebenshaltung/edit"
-					data-tooltip="Haushaltsbuch bearbeiten"
-					role="button"
-					class="small"
-				>
-					<Pencil strokeWidth={1} />
-				</a>
-			</h2>
-			<h2 class="icon">
-				<a href="/kategorien/sparen"> Sparen </a>
-				<a
-					href="/kategorien/sparen/edit"
-					data-tooltip="Haushaltsbuch bearbeiten"
-					role="button"
-					class="small"
-				>
-					<Pencil strokeWidth={1} />
-				</a>
-			</h2>
+			{#each categories as category}
+				<h2 class="icon">
+					{category.title}
+					<a
+						href={`/kategorien/${category.id}/edit`}
+						data-tooltip="Kategorie bearbeiten"
+						role="button"
+						class="small"
+					>
+						<Pencil strokeWidth={1} />
+					</a>
+				</h2>
+			{/each}
 		</section>
 	</div>
 </main>
