@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id          Int          @id @default(autoincrement())
+  firstName   String
+  lastName    String
+  email       String
+  budgetBooks BudgetBook[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime
+}
+
+model BudgetBook {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  year        Int
+  items       Item[]
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  items       Item[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+}
+
+model Item {
+  id           Int             @id @default(autoincrement())
+  title        String
+  description  String
+  months       ItemsInMonths[]
+  type         Type            @default(EXPENSE)
+  budgetBook   BudgetBook      @relation(fields: [budgetBookId], references: [id])
+  budgetBookId Int
+  category     Category        @relation(fields: [categoryId], references: [id])
+  categoryId   Int
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime
+}
+
+model Month {
+  id    Int             @id @default(autoincrement())
+  slug  String          @unique
+  title String
+  items ItemsInMonths[]
+}
+
+model ItemsInMonths {
+  item       Item     @relation(fields: [itemId], references: [id])
+  itemId     Int // relation scalar field (used in the `@relation` attribute above)
+  month      Month    @relation(fields: [monthId], references: [id])
+  monthId    Int // relation scalar field (used in the `@relation` attribute above)
+  assignedAt DateTime @default(now())
+  assignedBy String
+
+  @@id([itemId, monthId])
+}
+
+enum Type {
+  INCOME
+  EXPENSE
+}
