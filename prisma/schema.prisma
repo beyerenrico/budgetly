@@ -59,12 +59,11 @@ model Month {
 }
 
 model ItemsInMonths {
-  itemId     String
-  monthId    String
-  assignedAt DateTime @default(now())
-  assignedBy String
-  item       Item     @relation(fields: [itemId], references: [id])
-  month      Month    @relation(fields: [monthId], references: [id])
+  itemId  String
+  monthId String
+  value   Float
+  item    Item   @relation(fields: [itemId], references: [id])
+  month   Month  @relation(fields: [monthId], references: [id])
 
   @@id([itemId, monthId])
 }
