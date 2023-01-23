@@ -22,7 +22,7 @@
 <main>
 	<div class="container">
 		<section>
-			<h3>Deine Haushaltsbücher</h3>
+			<h3><a href="/haushaltsbuecher">Haushaltsbücher</a></h3>
 			<div class="grid">
 				{#each budgetBooks as budgetBook}
 					<article>
@@ -48,7 +48,7 @@
 			</div>
 		</section>
 		<section>
-			<h3>Deine Posten</h3>
+			<h3><a href="/posten">Posten</a></h3>
 			<div class="grid">
 				{#each items as item}
 					<article>
@@ -74,7 +74,7 @@
 			</div>
 		</section>
 		<section>
-			<h3>Kategorien</h3>
+			<h3><a href="/kategorien">Kategorien</a></h3>
 			<div class="grid">
 				{#each categories as category}
 					<article>
