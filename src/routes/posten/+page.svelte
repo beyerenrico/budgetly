@@ -7,10 +7,7 @@
 </script>
 
 <header>
-	<hgroup>
-		<h1>Posten</h1>
-		<h2>Erstelle Kategorien für deine Posten</h2>
-	</hgroup>
+	<h1>Posten</h1>
 	<a href="/posten/new" role="button">Posten erstellen</a>
 </header>
 <nav aria-label="breadcrumb">

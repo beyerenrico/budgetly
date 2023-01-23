@@ -7,10 +7,7 @@
 </script>
 
 <header>
-	<hgroup>
-		<h1>Kategorien</h1>
-		<h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, impedit!</h2>
-	</hgroup>
+	<h1>Kategorien</h1>
 	<a href="/kategorien/new" role="button">Kategorie erstellen</a>
 </header>
 <nav aria-label="breadcrumb">

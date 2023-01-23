@@ -7,10 +7,7 @@
 </script>
 
 <header>
-	<hgroup>
-		<h1 class="icon">Posten erstellen</h1>
-		<h2>Lorem ipsum dolor sit amet</h2>
-	</hgroup>
+	<h1>Posten erstellen</h1>
 </header>
 <nav aria-label="breadcrumb">
 	<div class="container">
@@ -92,29 +89,18 @@
 						{/each}
 					</div>
 				</fieldset>
-				<p>
-					<button type="submit">Erstellen</button>
-
-					<button class="outline danger" data-tooltip="Löschen">
-						<Trash strokeWidth={1} />
-					</button>
-				</p>
+				<button type="submit">Erstellen</button>
 			</div>
 		</form>
 	</div>
 </main>
 
 <style lang="scss">
-	form {
-		p {
-			display: grid;
-			grid-template-columns: auto 70px;
-			align-items: center;
-			gap: 1rem;
-		}
+	header {
+		text-align: center;
 
-		button {
-			margin-bottom: 0;
+		h1 {
+			margin-top: 2rem;
 		}
 	}
 

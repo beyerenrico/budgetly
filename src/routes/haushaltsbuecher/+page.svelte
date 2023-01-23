@@ -7,10 +7,7 @@
 </script>
 
 <header>
-	<hgroup>
-		<h1>Haushaltsbücher</h1>
-		<h2>Erstelle Kategorien für deine Posten</h2>
-	</hgroup>
+	<h1>Haushaltsbücher</h1>
 	<a href="/haushaltsbuecher/new" role="button">Haushaltsbücher erstellen</a>
 </header>
 <nav aria-label="breadcrumb">

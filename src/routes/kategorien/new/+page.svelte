@@ -2,10 +2,7 @@
 </script>
 
 <header>
-	<hgroup>
-		<h1 class="icon">Kategorie erstellen</h1>
-		<h2>Lorem ipsum dolor sit amet</h2>
-	</hgroup>
+	<h1>Kategorie erstellen</h1>
 </header>
 <nav aria-label="breadcrumb">
 	<div class="container">
@@ -38,5 +35,12 @@
 	</div>
 </main>
 
-<style>
+<style lang="scss">
+	header {
+		text-align: center;
+
+		h1 {
+			margin-top: 2rem;
+		}
+	}
 </style>
