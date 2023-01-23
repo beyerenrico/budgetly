@@ -7,5 +7,7 @@ export const handle = async ({ event, resolve }) => {
 	event.locals.sb = supabaseClient;
 	event.locals.session = session;
 
-	return resolve(event);
+	const response = await resolve(event);
+
+	return response;
 };
