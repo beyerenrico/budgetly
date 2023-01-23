@@ -12,7 +12,8 @@ async function main() {
 			update: {},
 			create: {
 				slug: monthsJSON.months[i].slug,
-				title: monthsJSON.months[i].title
+				title: monthsJSON.months[i].title,
+				rank: monthsJSON.months[i].rank
 			}
 		});
 	}

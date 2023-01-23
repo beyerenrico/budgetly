@@ -17,14 +17,15 @@ model User {
 }
 
 model BudgetBook {
-  id          String    @id @default(uuid())
+  id          String          @id @default(uuid())
   title       String
   description String
   year        Int
   userId      String
-  createdAt   DateTime  @default(now())
+  createdAt   DateTime        @default(now())
   updatedAt   DateTime?
-  user        User      @relation(fields: [userId], references: [id])
+  user        User            @relation(fields: [userId], references: [id])
+  itemsInMonths       ItemsInMonths[]
   items       Item[]
 }
 
@@ -41,11 +42,11 @@ model Item {
   id           String          @id @default(uuid())
   title        String
   description  String
-  type         Type            @default(EXPENSE)
   budgetBookId String
   categoryId   String
   createdAt    DateTime        @default(now())
   updatedAt    DateTime?
+  type         Type            @default(EXPENSE)
   budgetBook   BudgetBook      @relation(fields: [budgetBookId], references: [id])
   category     Category        @relation(fields: [categoryId], references: [id])
   months       ItemsInMonths[]
@@ -55,15 +56,19 @@ model Month {
   id    String          @id @default(uuid())
   slug  String          @unique
   title String
+  rank  Int
   items ItemsInMonths[]
 }
 
 model ItemsInMonths {
-  itemId  String
-  monthId String
-  value   Float
-  item    Item   @relation(fields: [itemId], references: [id])
-  month   Month  @relation(fields: [monthId], references: [id])
+  budgetBookId String
+  itemId       String
+  monthId      String
+  value        Float
+  rank         Int
+  budgetBook   BudgetBook @relation(fields: [budgetBookId], references: [id])
+  item         Item       @relation(fields: [itemId], references: [id])
+  month        Month      @relation(fields: [monthId], references: [id])
 
   @@id([itemId, monthId])
 }

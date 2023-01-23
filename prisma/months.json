@@ -2,51 +2,63 @@
 	"months": [
 		{
 			"slug": "january",
-			"title": "Januar"
+			"title": "Januar",
+			"rank": 1
 		},
 		{
 			"slug": "february",
-			"title": "Februar"
+			"title": "Februar",
+			"rank": 2
 		},
 		{
 			"slug": "march",
-			"title": "März"
+			"title": "März",
+			"rank": 3
 		},
 		{
 			"slug": "april",
-			"title": "April"
+			"title": "April",
+			"rank": 4
 		},
 		{
 			"slug": "may",
-			"title": "Mai"
+			"title": "Mai",
+			"rank": 5
 		},
 		{
 			"slug": "june",
-			"title": "Juni"
+			"title": "Juni",
+			"rank": 6
 		},
 		{
 			"slug": "july",
-			"title": "Juli"
+			"title": "Juli",
+			"rank": 7
 		},
 		{
 			"slug": "august",
-			"title": "August"
+			"title": "August",
+			"rank": 8
 		},
 		{
 			"slug": "september",
-			"title": "September"
+			"title": "September",
+			"rank": 9
 		},
 		{
 			"slug": "october",
-			"title": "Oktober"
+			"title": "Oktober",
+			"rank": 10
 		},
 		{
 			"slug": "november",
-			"title": "November"
+			"title": "November",
+			"rank": 11
 		},
 		{
 			"slug": "december",
-			"title": "Dezember"
+			"title": "Dezember",
+			"rank": 12
 		}
 	]
 }
