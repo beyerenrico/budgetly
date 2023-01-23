@@ -14,6 +14,7 @@ model User {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime?
   budgetBooks BudgetBook[]
+  categories  Category[]
 }
 
 model BudgetBook {
@@ -33,8 +34,10 @@ model Category {
   id          String    @id @default(uuid())
   title       String
   description String
+  userId      String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime?
+  user        User      @relation(fields: [userId], references: [id])
   items       Item[]
 }
 
