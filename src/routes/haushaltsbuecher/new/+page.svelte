@@ -7,6 +7,19 @@
 		<h2>Lorem ipsum dolor sit amet</h2>
 	</hgroup>
 </header>
+<nav aria-label="breadcrumb">
+	<div class="container">
+		<ul>
+			<li>
+				<a href="/">Startseite</a>
+			</li>
+			<li>
+				<a href="/haushaltsbuecher">Haushaltsbücher</a>
+			</li>
+			<li>Neues Haushaltsbuch</li>
+		</ul>
+	</div>
+</nav>
 <main>
 	<div class="container-fluid">
 		<form action="?/create" method="POST">
