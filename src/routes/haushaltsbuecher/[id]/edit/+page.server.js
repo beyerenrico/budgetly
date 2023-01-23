@@ -11,7 +11,7 @@ export const actions = {
 		try {
 			await prisma.budgetBook.upsert({
 				where: {
-					id: params.haushaltsbuchId
+					id: params.id
 				},
 				update: {
 					title: body.title,
@@ -22,11 +22,7 @@ export const actions = {
 					title: body.title,
 					description: body.description,
 					year: Number(body.year),
-					user: {
-						connect: {
-							id: user.id
-						}
-					}
+					userId: user.id
 				}
 			});
 		} catch (err) {
@@ -47,7 +43,7 @@ export async function load({ params }) {
 	return {
 		budgetBook: await prisma.budgetBook.findUnique({
 			where: {
-				id: params.haushaltsbuchId
+				id: params.id
 			}
 		})
 	};

@@ -83,14 +83,15 @@
 					<div class="grid">
 						{#each months as month}
 							<div>
+								<input type="hidden" name="rank:{month.id}" value={month.rank} />
 								<label for={month.id}>
 									{month.title}
 									<input
 										type="number"
-										name={`months:${month.id}`}
+										name="months:{month.id}"
 										id={month.id}
-										placeholder="10,99"
-										value=""
+										placeholder="10"
+										value="0"
 									/>
 								</label>
 							</div>

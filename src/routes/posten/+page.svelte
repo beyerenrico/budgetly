@@ -67,7 +67,7 @@
 								</ul>
 							</ul>
 							<a
-								href={`/posten/${item.id}/edit`}
+								href="/posten/{item.id}/edit"
 								role="button"
 								class="outline small"
 								data-tooltip="Posten bearbeiten"
@@ -77,6 +77,8 @@
 						</details>
 					{/each}
 				</section>
+			{:else}
+				Es wurden bisher keine Posten erstellt
 			{/each}
 		</section>
 	</div>

@@ -33,7 +33,7 @@
 				<h2 class="icon">
 					{category.title}
 					<a
-						href={`/kategorien/${category.id}/edit`}
+						href="/kategorien/{category.id}/edit"
 						data-tooltip="Kategorie bearbeiten"
 						role="button"
 						class="small"
@@ -41,6 +41,8 @@
 						<Pencil strokeWidth={1} />
 					</a>
 				</h2>
+			{:else}
+				Es wurden bisher keine Kategorien erstellt
 			{/each}
 		</section>
 	</div>

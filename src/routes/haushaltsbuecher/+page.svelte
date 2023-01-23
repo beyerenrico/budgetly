@@ -31,9 +31,9 @@
 		<section id="results">
 			{#each budgetBooks as budgetBook}
 				<h2 class="icon">
-					<a href={`/haushaltsbuecher/${budgetBook.id}`}> {budgetBook.title} </a>
+					<a href="/haushaltsbuecher/{budgetBook.id}"> {budgetBook.title} </a>
 					<a
-						href={`/haushaltsbuecher/${budgetBook.id}/edit`}
+						href="/haushaltsbuecher/{budgetBook.id}/edit"
 						data-tooltip="Haushaltsbuch bearbeiten"
 						role="button"
 						class="small"
@@ -41,6 +41,8 @@
 						<Pencil strokeWidth={1} />
 					</a>
 				</h2>
+			{:else}
+				Es wurden bisher keine Haushaltsbücher erstellt
 			{/each}
 		</section>
 	</div>

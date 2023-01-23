@@ -43,7 +43,9 @@
 		<li><a href="/haushaltsbuecher">Haushaltsbücher</a></li>
 		<li><a href="/kategorien">Kategorien</a></li>
 		<li><a href="/posten">Posten</a></li>
-		<li><a href="/haushaltsbuecher" role="button" class="medium">Haushaltsbuch erstellen</a></li>
+		<li>
+			<a href="/haushaltsbuecher/new" role="button" class="medium">Haushaltsbuch erstellen</a>
+		</li>
 		<li>
 			{#if data.session}
 				<form action="/logout" method="POST" use:enhance={submitLogout}>

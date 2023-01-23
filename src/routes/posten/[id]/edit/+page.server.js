@@ -15,39 +15,43 @@ export const actions = {
 				return { id, value };
 			});
 
+		const ranks = Object.entries(body)
+			.filter(([key]) => key.startsWith('rank:'))
+			.filter(([_, value]) => value)
+			.map(([key, value]) => {
+				const [_, id] = key.split(':');
+
+				return { id, value };
+			});
+
 		try {
 			await prisma.item.update({
 				where: {
-					id: params.postenId
+					id: params.id
 				},
 				data: {
 					title: body.title,
 					description: body.description,
-					budgetBook: {
-						connect: { id: body.budgetBook }
-					},
+					budgetBookId: body.budgetBook,
 					type: body.type,
-					category: {
-						connect: { id: body.category }
-					},
+					categoryId: body.category,
 					months: {
 						upsert: months.map(({ id, value }) => ({
 							where: {
 								itemId_monthId: {
-									itemId: params.postenId,
+									itemId: params.id,
 									monthId: id
 								}
 							},
 							update: {
-								value: parseInt(value)
+								value: parseFloat(value),
+								rank: parseInt(ranks.filter((obj) => obj.id === id).map((obj) => obj.value))
 							},
 							create: {
-								value: parseInt(value),
-								month: {
-									connect: {
-										id
-									}
-								}
+								value: parseFloat(value),
+								rank: parseInt(ranks.filter((obj) => obj.id === id).map((obj) => obj.value)),
+								monthId: id,
+								budgetBookId: body.budgetBook
 							}
 						}))
 					}
@@ -78,7 +82,7 @@ export async function load({ params, locals }) {
 		}),
 		item: await prisma.item.findUnique({
 			where: {
-				id: params.postenId
+				id: params.id
 			},
 			include: {
 				budgetBook: true,

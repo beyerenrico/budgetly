@@ -3,7 +3,7 @@ import { prisma } from '$lib/server/prisma';
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-	create: async ({ request, locals }) => {
+	create: async ({ request, params }) => {
 		const body = Object.fromEntries(await request.formData());
 
 		const months = Object.entries(body)
@@ -12,12 +12,16 @@ export const actions = {
 			.map(([key, value]) => {
 				const [_, id] = key.split(':');
 
-				return {
-					value: parseInt(value),
-					month: {
-						connect: { id }
-					}
-				};
+				return { id, value };
+			});
+
+		const ranks = Object.entries(body)
+			.filter(([key]) => key.startsWith('rank:'))
+			.filter(([_, value]) => value)
+			.map(([key, value]) => {
+				const [_, id] = key.split(':');
+
+				return { id, value };
 			});
 
 		try {
@@ -25,15 +29,16 @@ export const actions = {
 				data: {
 					title: body.title,
 					description: body.description,
-					budgetBook: {
-						connect: { id: body.budgetBook }
-					},
+					budgetBookId: body.budgetBook,
 					type: body.type,
-					category: {
-						connect: { id: body.category }
-					},
+					categoryId: body.category,
 					months: {
-						create: months
+						create: months.map(({ id, value }) => ({
+							value: parseFloat(value),
+							rank: parseInt(ranks.filter((obj) => obj.id === id).map((obj) => obj.value)),
+							monthId: id,
+							budgetBookId: body.budgetBook
+						}))
 					}
 				}
 			});

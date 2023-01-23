@@ -12,6 +12,9 @@ export async function load({ locals }) {
 					include: {
 						category: true,
 						months: {
+							orderBy: {
+								rank: 'asc'
+							},
 							include: {
 								month: true
 							}
