@@ -3,8 +3,10 @@ import { prisma } from '$lib/server/prisma';
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-	create: async ({ request, params }) => {
+	create: async ({ request, locals }) => {
 		const body = Object.fromEntries(await request.formData());
+
+		const { user } = locals.session;
 
 		const months = Object.entries(body)
 			.filter(([key]) => key.startsWith('months:'))
@@ -32,6 +34,7 @@ export const actions = {
 					budgetBookId: body.budgetBook,
 					type: body.type,
 					categoryId: body.category,
+					userId: user.id,
 					months: {
 						create: months.map(({ id, value }) => ({
 							value: parseFloat(value),
