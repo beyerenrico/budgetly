@@ -1,7 +1,7 @@
 import { AuthApiError } from '@supabase/supabase-js';
 import { fail, redirect } from '@sveltejs/kit';
 import { getServerSession } from '@supabase/auth-helpers-sveltekit';
-import { prisma } from '../../lib/server/prisma';
+import { prisma } from '$lib/server/prisma';
 
 /** @type {import('./$types').Actions} */
 export const actions = {
