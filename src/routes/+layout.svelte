@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import { Menu2 } from 'tabler-icons-svelte';
 	import { enhance } from '$app/forms';
+	import { page } from '$app/stores';
 	import '@picocss/pico';
 
 	onMount(() => {
@@ -19,6 +20,7 @@
 	});
 
 	export let data;
+	export let mobileMenuVisible = false;
 
 	const submitLogout = async ({ cancel }) => {
 		const { error } = await supabaseClient.auth.signOut();
@@ -29,23 +31,44 @@
 
 		cancel();
 	};
+
+	const toggleMobileMenu = () => {
+		mobileMenuVisible = !mobileMenuVisible;
+	};
+
+	const hideMobileMenu = () => {
+		mobileMenuVisible = false;
+	};
 </script>
 
-<nav role="menu">
+<nav role="menu" class="nav-desktop">
 	<ul>
 		<li>
-			<a href="/">
+			<a href="/" class="logo">
 				<strong>Budget.ly</strong>
 			</a>
 		</li>
 	</ul>
 	<ul class="items-desktop">
-		<li><a href="/haushaltsbuecher">Haushaltsbücher</a></li>
-		<li><a href="/kategorien">Kategorien</a></li>
-		<li><a href="/posten">Posten</a></li>
-		<li>
-			<a href="/haushaltsbuecher/new" role="button" class="medium">Haushaltsbuch erstellen</a>
-		</li>
+		{#if data.session}
+			<li>
+				<a href="/" class={$page.url.pathname === '/' && 'active'}>Startseite</a>
+			</li>
+			<li>
+				<a
+					href="/haushaltsbuecher"
+					class={$page.url.pathname.startsWith('/haushaltsbuecher') && 'active'}>Haushaltsbücher</a
+				>
+			</li>
+			<li>
+				<a href="/kategorien" class={$page.url.pathname.startsWith('/kategorien') && 'active'}
+					>Kategorien</a
+				>
+			</li>
+			<li>
+				<a href="/posten" class={$page.url.pathname.startsWith('/posten') && 'active'}>Posten</a>
+			</li>
+		{/if}
 		<li>
 			{#if data.session}
 				<form action="/logout" method="POST" use:enhance={submitLogout}>
@@ -58,18 +81,122 @@
 	</ul>
 	<ul class="hamburger">
 		<li>
-			<button class="small">
+			<button class="small" on:click={toggleMobileMenu}>
 				<Menu2 strokeWidth={1} size={32} />
 			</button>
 		</li>
 	</ul>
 </nav>
+<aside class="items-mobile {mobileMenuVisible ? 'show' : 'hide'}">
+	<nav role="menu">
+		<ul>
+			{#if data.session}
+				<li>
+					<a href="/" class={$page.url.pathname === '/' && 'active'} on:click={hideMobileMenu}
+						>Startseite</a
+					>
+				</li>
+				<li>
+					<a
+						href="/haushaltsbuecher"
+						class={$page.url.pathname.startsWith('/haushaltsbuecher') && 'active'}
+						on:click={hideMobileMenu}>Haushaltsbücher</a
+					>
+				</li>
+				<li>
+					<a
+						href="/kategorien"
+						class={$page.url.pathname.startsWith('/kategorien') && 'active'}
+						on:click={hideMobileMenu}>Kategorien</a
+					>
+				</li>
+				<li>
+					<a
+						href="/posten"
+						class={$page.url.pathname.startsWith('/posten') && 'active'}
+						on:click={hideMobileMenu}>Posten</a
+					>
+				</li>
+			{/if}
+			<li>
+				{#if data.session}
+					<form action="/logout" method="POST" use:enhance={submitLogout}>
+						<button type="submit" class="medium danger" on:click={hideMobileMenu}>Abmelden</button>
+					</form>
+				{:else}
+					<a href="/login" role="button" class="medium">Anmelden</a>
+				{/if}
+			</li>
+		</ul>
+	</nav>
+</aside>
 <slot />
+<footer>
+	<div class="container">
+		<small>Copyright &copy; {new Date().getFullYear()} budget.ly</small>
+	</div>
+</footer>
 
 <style lang="scss" global>
 	@import '../app';
 
+	.logo {
+		font-size: 2rem;
+	}
+
 	form {
 		margin-bottom: 0;
+	}
+
+	.items-desktop {
+		a:not([role='button']) {
+			color: #fff;
+
+			&:hover,
+			&:focus {
+				color: var(--primary);
+			}
+
+			&.active {
+				color: var(--primary);
+			}
+		}
+	}
+	nav {
+		display: flex;
+		align-items: center;
+	}
+
+	.items-mobile {
+		position: fixed;
+		background-color: var(--background-color);
+		right: 0;
+		left: 0;
+		transform: translateY(calc(-100% - 80px));
+		transition: transform 0.2s ease-out;
+
+		&.show {
+			transform: translateY(0);
+			transition: transform 0.3s ease-in-out;
+		}
+
+		a:not([role='button']) {
+			color: #fff;
+
+			&:hover,
+			&:focus {
+				color: var(--primary);
+			}
+
+			&.active {
+				color: var(--primary);
+			}
+		}
+	}
+
+	.nav-desktop {
+		position: relative;
+		z-index: 10;
+		background-color: var(--background-color);
 	}
 </style>

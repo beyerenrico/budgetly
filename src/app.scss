@@ -6,6 +6,7 @@
 	--success-inverse: white;
 	--card-background-color-light: #18232c;
 	--card-background-color-light-hover: #243440;
+	--header-background-color: #121212;
 }
 
 nav {
@@ -14,7 +15,7 @@ nav {
 }
 
 header {
-	background-color: #121212;
+	background-color: var(--header-background-color);
 
 	hgroup,
 	p {
@@ -98,6 +99,12 @@ button,
 
 	@media (min-width: 768px) {
 		display: block;
+	}
+}
+
+.items-mobile {
+	@media (min-width: 768px) {
+		display: none;
 	}
 }
 
