@@ -26,7 +26,7 @@ model BudgetBook {
   userId      String
   createdAt   DateTime        @default(now())
   updatedAt   DateTime?
-  user        User            @relation(fields: [userId], references: [id])
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   itemsInMonths       ItemsInMonths[]
   items       Item[]
 }
@@ -38,7 +38,7 @@ model Category {
   userId      String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime?
-  user        User      @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   items       Item[]
 }
 
@@ -47,14 +47,14 @@ model Item {
   title        String
   description  String
   budgetBookId String
-  categoryId   String
+  categoryId   String?
   userId       String
   createdAt    DateTime        @default(now())
   updatedAt    DateTime?
   type         Type            @default(EXPENSE)
-  budgetBook   BudgetBook      @relation(fields: [budgetBookId], references: [id])
-  category     Category        @relation(fields: [categoryId], references: [id])
-  user         User            @relation(fields: [userId], references: [id])
+  budgetBook   BudgetBook      @relation(fields: [budgetBookId], references: [id], onDelete: Cascade)
+  category     Category?       @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   months       ItemsInMonths[]
 }
 
@@ -72,9 +72,9 @@ model ItemsInMonths {
   monthId      String
   value        Float
   rank         Int
-  budgetBook   BudgetBook @relation(fields: [budgetBookId], references: [id])
-  item         Item       @relation(fields: [itemId], references: [id])
-  month        Month      @relation(fields: [monthId], references: [id])
+  budgetBook   BudgetBook @relation(fields: [budgetBookId], references: [id], onDelete: Cascade)
+  item         Item       @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  month        Month      @relation(fields: [monthId], references: [id], onDelete: Cascade)
 
   @@id([itemId, monthId])
 }
