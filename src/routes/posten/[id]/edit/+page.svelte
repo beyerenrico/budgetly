@@ -19,6 +19,21 @@
 		<h2>{item.description}</h2>
 	</hgroup>
 </header>
+<nav aria-label="breadcrumb">
+	<div class="container">
+		<ul>
+			<li>
+				<a href="/">Startseite</a>
+			</li>
+			<li>
+				<a href="/posten">Posten</a>
+			</li>
+			<li>
+				{item.title}
+			</li>
+		</ul>
+	</div>
+</nav>
 <main>
 	<div class="container-fluid">
 		<form action="?/update" method="POST">

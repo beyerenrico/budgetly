@@ -9,9 +9,22 @@
 <header>
 	<hgroup>
 		<h1 class="icon">Sie bearbeiten die Kategorie: {category.title}</h1>
-		<h2>Lorem ipsum dolor sit amet</h2>
+		<h2>{category.description}</h2>
 	</hgroup>
 </header>
+<nav aria-label="breadcrumb">
+	<div class="container">
+		<ul>
+			<li>
+				<a href="/">Startseite</a>
+			</li>
+			<li>
+				<a href="/kategorien">Kategorien</a>
+			</li>
+			<li>{category.title}</li>
+		</ul>
+	</div>
+</nav>
 <main>
 	<div class="container-fluid">
 		<form action="?/update" method="POST">

@@ -14,6 +14,22 @@
 		</hgroup>
 	</div>
 </header>
+<nav aria-label="breadcrumb">
+	<div class="container">
+		<ul>
+			<li>
+				<a href="/">Startseite</a>
+			</li>
+			<li>
+				<a href="/haushaltsbuecher">Haushaltsbücher</a>
+			</li>
+			<li>
+				<a href="/haushaltsbuecher/{budgetBook.id}">{budgetBook.title}</a>
+			</li>
+			<li>Bearbeiten</li>
+		</ul>
+	</div>
+</nav>
 <main>
 	<div class="container-fluid">
 		<form action="?/update" method="POST">

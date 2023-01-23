@@ -22,6 +22,19 @@
 		<h2>{budgetBook.description}</h2>
 	</hgroup>
 </header>
+<nav aria-label="breadcrumb">
+	<div class="container">
+		<ul>
+			<li>
+				<a href="/">Startseite</a>
+			</li>
+			<li>
+				<a href="/haushaltsbuecher">Haushaltsbücher</a>
+			</li>
+			<li>{budgetBook.title}</li>
+		</ul>
+	</div>
+</nav>
 <main>
 	<div class="container-fluid">
 		<section>

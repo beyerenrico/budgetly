@@ -13,6 +13,16 @@
 	</hgroup>
 	<a href="/posten/new" role="button">Posten erstellen</a>
 </header>
+<nav aria-label="breadcrumb">
+	<div class="container">
+		<ul>
+			<li>
+				<a href="/">Startseite</a>
+			</li>
+			<li>Posten</li>
+		</ul>
+	</div>
+</nav>
 <main>
 	<div class="container">
 		<section>

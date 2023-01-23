@@ -13,6 +13,16 @@
 	</hgroup>
 	<a href="/haushaltsbuecher/new" role="button">Haushaltsbücher erstellen</a>
 </header>
+<nav aria-label="breadcrumb">
+	<div class="container">
+		<ul>
+			<li>
+				<a href="/">Startseite</a>
+			</li>
+			<li>Haushaltsbücher</li>
+		</ul>
+	</div>
+</nav>
 <main>
 	<div class="container">
 		<section>

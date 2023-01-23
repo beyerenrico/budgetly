@@ -13,6 +13,16 @@
 	</hgroup>
 	<a href="/kategorien/new" role="button">Kategorie erstellen</a>
 </header>
+<nav aria-label="breadcrumb">
+	<div class="container">
+		<ul>
+			<li>
+				<a href="/">Startseite</a>
+			</li>
+			<li>Kategorien</li>
+		</ul>
+	</div>
+</nav>
 <main>
 	<div class="container">
 		<section>
