@@ -2,6 +2,8 @@
 	import { Plus } from 'tabler-icons-svelte';
 
 	export let data;
+
+	$: ({ items, categories, budgetBooks } = data);
 </script>
 
 <header>
@@ -22,17 +24,22 @@
 		<section>
 			<h3>Deine Haushaltsbücher</h3>
 			<div class="grid">
-				<article>
-					<div>
-						Haushaltsbuch 2019
+				{#each budgetBooks as budgetBook}
+					<article>
+						<div>
+							{budgetBook.title}
 
-						<p>
-							<a href="/haushaltsbuecher/1" role="button" class="primary small" aria-label="Ansehen"
-								>Ansehen</a
-							>
-						</p>
-					</div>
-				</article>
+							<p>
+								<a
+									href="/haushaltsbuecher/{budgetBook.id}"
+									role="button"
+									class="primary small"
+									aria-label="Ansehen">Ansehen</a
+								>
+							</p>
+						</div>
+					</article>
+				{/each}
 				<article class="new">
 					<a href="/haushaltsbuecher/new" data-tooltip="Haushaltsbuch erstellen">
 						<Plus strokeWidth={2} size={50} />
@@ -43,16 +50,22 @@
 		<section>
 			<h3>Deine Posten</h3>
 			<div class="grid">
-				<article>
-					<div>
-						<small> Miete 820,00 € monatlich </small>
-						<p>
-							<a href="/posten/1/edit" role="button" class="primary small" aria-label="Posten"
-								>Ansehen</a
-							>
-						</p>
-					</div>
-				</article>
+				{#each items as item}
+					<article>
+						<div>
+							{item.title}
+
+							<p>
+								<a
+									href="/posten/{item.id}/edit"
+									role="button"
+									class="primary small"
+									aria-label="Posten">Ansehen</a
+								>
+							</p>
+						</div>
+					</article>
+				{/each}
 				<article class="new">
 					<a href="/posten/new" data-tooltip="Ausgabe erstellen">
 						<Plus strokeWidth={2} size={50} />
@@ -63,48 +76,22 @@
 		<section>
 			<h3>Kategorien</h3>
 			<div class="grid">
-				<article>
-					<div>
-						Sparen
+				{#each categories as category}
+					<article>
+						<div>
+							{category.title}
 
-						<p>
-							<a
-								href="/kategorien/sparen/edit"
-								role="button"
-								class="primary small"
-								aria-label="Documentation">Bearbeiten</a
-							>
-						</p>
-					</div>
-				</article>
-				<article>
-					<div>
-						Versicherung
-
-						<p>
-							<a
-								href="/kategorien/versicherung/edit"
-								role="button"
-								class="primary small"
-								aria-label="Documentation">Bearbeiten</a
-							>
-						</p>
-					</div>
-				</article>
-				<article>
-					<div>
-						Lebenshaltung
-
-						<p>
-							<a
-								href="/kategorien/lebenshaltung/edit"
-								role="button"
-								class="primary small"
-								aria-label="Documentation">Bearbeiten</a
-							>
-						</p>
-					</div>
-				</article>
+							<p>
+								<a
+									href="/kategorien/{category.id}/edit"
+									role="button"
+									class="primary small"
+									aria-label="Documentation">Bearbeiten</a
+								>
+							</p>
+						</div>
+					</article>
+				{/each}
 				<article class="new">
 					<a href="/kategorien/new" data-tooltip="Kategorie erstellen">
 						<Plus strokeWidth={2} size={50} />
@@ -128,9 +115,5 @@
 		@media (min-width: 1200px) {
 			grid-template-columns: repeat(4, 1fr);
 		}
-	}
-
-	.auth-buttons {
-		text-align: center;
 	}
 </style>
