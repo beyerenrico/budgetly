@@ -98,32 +98,20 @@
 						{/each}
 					</div>
 				</fieldset>
-				<p>
-					<button type="submit">Aktualisieren</button>
-
-					<button class="outline danger" data-tooltip="Löschen">
-						<Trash strokeWidth={1} />
-					</button>
-				</p>
+				<button type="submit">Aktualisieren</button>
+			</div>
+		</form>
+		<form action="?/delete" method="POST">
+			<div class="container">
+				<button type="submit" class="outline danger" data-tooltip="Löschen">
+					<Trash strokeWidth={1} />
+				</button>
 			</div>
 		</form>
 	</div>
 </main>
 
 <style lang="scss">
-	form {
-		p {
-			display: grid;
-			grid-template-columns: auto 70px;
-			align-items: center;
-			gap: 1rem;
-		}
-
-		button {
-			margin-bottom: 0;
-		}
-	}
-
 	fieldset {
 		.grid {
 			grid-template-columns: 1fr;

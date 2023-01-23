@@ -67,7 +67,7 @@
 					</article>
 				{/each}
 				<article class="new">
-					<a href="/posten/new" data-tooltip="Ausgabe erstellen">
+					<a href="/posten/new" data-tooltip="Posten erstellen">
 						<Plus strokeWidth={2} size={50} />
 					</a>
 				</article>

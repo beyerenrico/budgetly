@@ -1,4 +1,4 @@
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { prisma } from '$lib/server/prisma';
 
 /** @type {import('./$types').Actions} */
@@ -35,6 +35,22 @@ export const actions = {
 		return {
 			status: 201
 		};
+	},
+	delete: async ({ params }) => {
+		try {
+			await prisma.budgetBook.delete({
+				where: {
+					id: params.id
+				}
+			});
+		} catch (err) {
+			console.log(err);
+			return fail(500, {
+				message: 'Budget Book could not be deleted.'
+			});
+		}
+
+		throw redirect(303, '/haushaltsbuecher');
 	}
 };
 
