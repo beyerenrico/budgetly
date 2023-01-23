@@ -15,6 +15,7 @@ model User {
   updatedAt   DateTime?
   budgetBooks BudgetBook[]
   categories  Category[]
+  items       Item[]
 }
 
 model BudgetBook {
@@ -47,11 +48,13 @@ model Item {
   description  String
   budgetBookId String
   categoryId   String
+  userId       String
   createdAt    DateTime        @default(now())
   updatedAt    DateTime?
   type         Type            @default(EXPENSE)
   budgetBook   BudgetBook      @relation(fields: [budgetBookId], references: [id])
   category     Category        @relation(fields: [categoryId], references: [id])
+  user         User            @relation(fields: [userId], references: [id])
   months       ItemsInMonths[]
 }
 
