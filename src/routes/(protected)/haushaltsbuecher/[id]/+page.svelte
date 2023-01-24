@@ -44,7 +44,7 @@
 						<tr>
 							<th />
 							{#each months as month}
-								<th id={month.id} scope="col" style="text-align: right;"> {month.title} </th>
+								<th id={month.id} scope="col"> {month.title} </th>
 							{/each}
 							<th id="actions" scope="col" />
 						</tr>
@@ -58,7 +58,7 @@
 
 								<th
 									><a
-										href="/posten/new"
+										href="/posten/new?category={category.id}&budgetBook={budgetBook.id}"
 										data-tooltip="Posten hinzufügen"
 										role="button"
 										class="small"
@@ -71,8 +71,8 @@
 								<tr>
 									<th headers={category.id} id={item.id}>{item.title}</th>
 									{#each item.months as month}
-										<td headers="{category.id} {item.id} {month.id}" style="text-align: right;"
-											>{month.value} €</td
+										<td headers="{category.id} {item.id} {month.id}"
+											>{month.value.toFixed(2).toString().replace('.', ',')} €</td
 										>
 									{/each}
 									<th headers="{category.id} {item.id} actions">
@@ -107,8 +107,8 @@
 						<tr>
 							<th headers="gesamt-ausgaben" id="saldo"> Saldo </th>
 							{#each itemsInMonths as item}
-								<td headers="gesamt-ausgaben saldo {item.monthId}" style="text-align: right;">
-									{item._sum.value} €
+								<td headers="gesamt-ausgaben saldo {item.monthId}">
+									{item._sum.value.toFixed(2).toString().replace('.', ',')} €
 								</td>
 							{/each}
 							<td />
@@ -121,45 +121,8 @@
 </main>
 
 <style lang="scss">
-	article {
-		padding-top: 1rem;
-		padding-bottom: 0;
-		padding-left: 0;
-		padding-right: 0;
-
-		&.new {
-			height: 100px;
-
-			@media (min-width: 768px) {
-				height: 200px;
-			}
-		}
-	}
-
 	th {
 		width: 400px;
-	}
-
-	section {
-		h2 {
-			margin-bottom: 1rem;
-		}
-
-		article {
-			margin-top: 0;
-		}
-	}
-
-	hr {
-		margin-bottom: 1rem;
-
-		@media screen and (min-width: 768px) {
-			margin-bottom: 2rem;
-		}
-
-		@media screen and (min-width: 1024px) {
-			margin-bottom: 3rem;
-		}
 	}
 
 	th {

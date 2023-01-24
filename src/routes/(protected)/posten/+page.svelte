@@ -59,7 +59,12 @@
 					<section id={budgetBook.id}>
 						<h2 class="icon">
 							{budgetBook.title}
-							<a href="/posten/new" data-tooltip="Posten hinzufügen" role="button" class="small">
+							<a
+								href="/posten/new?budgetBook={budgetBook.id}"
+								data-tooltip="Posten hinzufügen"
+								role="button"
+								class="small"
+							>
 								<Plus strokeWidth={1} />
 							</a>
 						</h2>
@@ -124,7 +129,12 @@
 					<section id={budgetBook.id}>
 						<h2 class="icon">
 							{budgetBook.title}
-							<a href="/posten/new" data-tooltip="Posten hinzufügen" role="button" class="small">
+							<a
+								href="/posten/new?budgetBook={budgetBook.id}"
+								data-tooltip="Posten hinzufügen"
+								role="button"
+								class="small"
+							>
 								<Plus strokeWidth={1} />
 							</a>
 						</h2>

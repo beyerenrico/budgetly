@@ -1,5 +1,5 @@
 <script>
-	import { Pencil } from 'tabler-icons-svelte';
+	import { Eye, Pencil } from 'tabler-icons-svelte';
 
 	export let data;
 	export let form;
@@ -44,12 +44,20 @@
 			{#if form?.filteredHaushaltsbuecher}
 				{#each form?.filteredHaushaltsbuecher as budgetBook}
 					<h2 class="icon">
-						<a href="/haushaltsbuecher/{budgetBook.id}"> {budgetBook.title} </a>
+						{budgetBook.title}
+						<a
+							href="/haushaltsbuecher/{budgetBook.id}"
+							data-tooltip="Haushaltsbuch aufrufen"
+							role="button"
+							class="small"
+						>
+							<Eye strokeWidth={1} />
+						</a>
 						<a
 							href="/haushaltsbuecher/{budgetBook.id}/edit"
 							data-tooltip="Haushaltsbuch bearbeiten"
 							role="button"
-							class="small"
+							class="small secondary"
 						>
 							<Pencil strokeWidth={1} />
 						</a>
@@ -60,12 +68,20 @@
 			{:else}
 				{#each budgetBooks as budgetBook}
 					<h2 class="icon">
-						<a href="/haushaltsbuecher/{budgetBook.id}"> {budgetBook.title} </a>
+						{budgetBook.title}
+						<a
+							href="/haushaltsbuecher/{budgetBook.id}"
+							data-tooltip="Haushaltsbuch aufrufen"
+							role="button"
+							class="small"
+						>
+							<Eye strokeWidth={1} />
+						</a>
 						<a
 							href="/haushaltsbuecher/{budgetBook.id}/edit"
 							data-tooltip="Haushaltsbuch bearbeiten"
 							role="button"
-							class="small"
+							class="small secondary"
 						>
 							<Pencil strokeWidth={1} />
 						</a>

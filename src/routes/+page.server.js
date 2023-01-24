@@ -12,7 +12,10 @@ export async function load({ locals }) {
 	return {
 		categories: await prisma.category.findMany(),
 		items: await prisma.item.findMany({
-			where: { userId: user.id }
+			where: { userId: user.id },
+			include: {
+				budgetBook: true
+			}
 		}),
 		budgetBooks: await prisma.budgetBook.findMany({
 			where: { userId: user.id }

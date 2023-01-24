@@ -53,7 +53,10 @@
 				{#each items as item}
 					<article>
 						<div>
-							{item.title}
+							<div class="item-title-group">
+								<small>{item.budgetBook.title}</small>
+								<p>{item.title}</p>
+							</div>
 
 							<p>
 								<a
@@ -103,6 +106,26 @@
 </main>
 
 <style lang="scss">
+	h3 {
+		a {
+			&:hover,
+			&:focus {
+				text-decoration: none;
+			}
+		}
+	}
+
+	.item-title-group {
+		small {
+			color: var(--secondary);
+			margin-bottom: 0;
+		}
+
+		p {
+			margin-top: 0;
+		}
+	}
+
 	.grid {
 		@media (min-width: 768px) {
 			grid-template-columns: repeat(2, 1fr);

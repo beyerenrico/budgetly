@@ -1,6 +1,7 @@
 <script>
 	import { ArrowUpRight } from 'tabler-icons-svelte';
 	import { enhance } from '$app/forms';
+	import { page } from '$app/stores';
 	import toast from 'svelte-french-toast';
 
 	export let data;
@@ -88,7 +89,9 @@
 				>
 					<option value="">Haushaltsbuch auswählen</option>
 					{#each budgetBooks as budgetBook}
-						<option value={budgetBook.id}>{budgetBook.title}</option>
+						<option value={budgetBook.id} selected={$page.url.searchParams.get('budgetBook')}
+							>{budgetBook.title}</option
+						>
 					{/each}
 				</select>
 				{#if form?.errors}
@@ -129,7 +132,9 @@
 						>
 							<option value="">Kategorie auswählen</option>
 							{#each categories as category}
-								<option value={category.id}>{category.title}</option>
+								<option value={category.id} selected={$page.url.searchParams.get('category')}
+									>{category.title}</option
+								>
 							{/each}
 						</select>
 						{#if form?.errors}
