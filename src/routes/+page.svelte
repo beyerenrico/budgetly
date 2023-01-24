@@ -27,7 +27,7 @@
 				{#each budgetBooks as budgetBook}
 					<article>
 						<div>
-							{budgetBook.title}
+							<p class="title">{budgetBook.title}</p>
 
 							<p>
 								<a
@@ -55,7 +55,7 @@
 						<div>
 							<div class="item-title-group">
 								<small>{item.budgetBook.title}</small>
-								<p>{item.title}</p>
+								<p class="title">{item.title}</p>
 							</div>
 
 							<p>
@@ -63,7 +63,7 @@
 									href="/posten/{item.id}/edit"
 									role="button"
 									class="primary small"
-									aria-label="Posten">Ansehen</a
+									aria-label="Posten">Bearbeiten</a
 								>
 							</p>
 						</div>
@@ -82,7 +82,7 @@
 				{#each categories as category}
 					<article>
 						<div>
-							{category.title}
+							<p class="title">{category.title}</p>
 
 							<p>
 								<a
@@ -116,6 +116,8 @@
 	}
 
 	.item-title-group {
+		flex-grow: 1;
+
 		small {
 			color: var(--secondary);
 			margin-bottom: 0;
@@ -124,6 +126,11 @@
 		p {
 			margin-top: 0;
 		}
+	}
+
+	p.title {
+		margin-top: 0;
+		hyphens: auto;
 	}
 
 	.grid {
@@ -137,6 +144,12 @@
 
 		@media (min-width: 1200px) {
 			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+
+	article {
+		> div {
+			width: 100%;
 		}
 	}
 </style>
