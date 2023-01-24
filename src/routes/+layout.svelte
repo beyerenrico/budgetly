@@ -3,6 +3,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { Menu2 } from 'tabler-icons-svelte';
+	import toast, { Toaster } from 'svelte-french-toast';
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import '@picocss/pico';
@@ -22,13 +23,14 @@
 	export let data;
 	export let mobileMenuVisible = false;
 
-	const submitLogout = async ({ cancel }) => {
+	const submitLogout = async ({ request, cancel }) => {
 		const { error } = await supabaseClient.auth.signOut();
 
 		if (error) {
 			console.error(error);
 		}
 
+		toast.success('Erfolgreich abgemeldet');
 		cancel();
 	};
 
@@ -69,15 +71,18 @@
 				<a href="/posten" class={$page.url.pathname.startsWith('/posten') && 'active'}>Posten</a>
 			</li>
 		{/if}
-		<li>
-			{#if data.session}
+		{#if data.session}
+			<li>
 				<form action="/logout" method="POST" use:enhance={submitLogout}>
 					<button type="submit" class="medium danger">Abmelden</button>
 				</form>
-			{:else}
-				<a href="/login" role="button" class="medium">Anmelden</a>
-			{/if}
-		</li>
+			</li>
+		{:else}
+			<li>
+				<a href="/login" role="button" class="medium secondary">Anmelden</a>
+				<a href="/register" role="button" class="medium">Registrieren</a>
+			</li>
+		{/if}
 	</ul>
 	<ul class="hamburger">
 		<li>
@@ -118,15 +123,18 @@
 					>
 				</li>
 			{/if}
-			<li>
-				{#if data.session}
+			{#if data.session}
+				<li>
 					<form action="/logout" method="POST" use:enhance={submitLogout}>
 						<button type="submit" class="medium danger" on:click={hideMobileMenu}>Abmelden</button>
 					</form>
-				{:else}
-					<a href="/login" role="button" class="medium">Anmelden</a>
-				{/if}
-			</li>
+				</li>
+			{:else}
+				<li>
+					<a href="/login" role="button" class="medium secondary">Anmelden</a>
+					<a href="/register" role="button" class="medium">Registrieren</a>
+				</li>
+			{/if}
 		</ul>
 	</nav>
 </aside>
@@ -136,6 +144,7 @@
 		<small>Copyright &copy; {new Date().getFullYear()} budget.ly</small>
 	</div>
 </footer>
+<Toaster />
 
 <style lang="scss" global>
 	@import '../app';

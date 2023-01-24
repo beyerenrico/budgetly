@@ -4,7 +4,7 @@ import { prisma } from '$lib/server/prisma';
 /** @type {import('./$types').PageLoad} */
 export async function load({ locals }) {
 	if (!locals.session) {
-		throw redirect(303, '/login');
+		throw redirect(303, '/register');
 	}
 
 	const { user } = locals.session;

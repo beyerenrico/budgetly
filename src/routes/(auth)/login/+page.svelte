@@ -1,19 +1,63 @@
 <script>
+	import { enhance } from '$app/forms';
+	import toast from 'svelte-french-toast';
+	let loading = false;
+	let hasErrors = false;
+
+	const submitLogin = () => {
+		loading = true;
+		return async ({ result, update }) => {
+			switch (result.type) {
+				case 'redirect':
+					toast.success('Erfolgreich angemeldet');
+					await update();
+					break;
+				case 'failure':
+					hasErrors = true;
+					toast.error('Ungültige Anmeldedaten', {
+						duration: 6000
+					});
+					await update();
+					break;
+				case 'error':
+					toast.error('Es ist ein Fehler aufgetreten');
+					break;
+				default:
+					await update();
+			}
+
+			loading = false;
+		};
+	};
 </script>
 
 <main>
 	<div class="container">
 		<h1>Anmelden</h1>
-		<form action="?/login" method="POST">
+		<form action="?/login" method="POST" use:enhance={submitLogin}>
 			<label for="email">
 				E-Mail-Adresse
-				<input type="email" name="email" id="email" />
+				<input
+					type="email"
+					name="email"
+					id="email"
+					placeholder="max@mustermann.de"
+					disabled={loading}
+					aria-invalid={hasErrors ? true : ''}
+				/>
 			</label>
 			<label for="password">
 				Passwort
-				<input type="password" name="password" id="password" placeholder="********" />
+				<input
+					type="password"
+					name="password"
+					id="password"
+					placeholder="********"
+					disabled={loading}
+					aria-invalid={hasErrors ? true : ''}
+				/>
 			</label>
-			<button type="submit">Login</button>
+			<button type="submit" disabled={loading} aria-busy={loading}>Anmelden</button>
 			<small>
 				<a href="/register"> Sie besitzen noch keinen Account? Jetzt registrieren! </a>
 			</small>

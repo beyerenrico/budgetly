@@ -46,7 +46,7 @@ export const actions = {
 				}
 			});
 		} catch (err) {
-			console.log(err);
+			console.log('Error: ' + err);
 			return fail(500, {
 				message: 'Category could not be created.'
 			});

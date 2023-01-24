@@ -6,6 +6,6 @@ export async function load(event) {
 	const session = await getServerSession(event);
 
 	if (!session) {
-		throw redirect(303, '/login');
+		throw redirect(303, '/register');
 	}
 }

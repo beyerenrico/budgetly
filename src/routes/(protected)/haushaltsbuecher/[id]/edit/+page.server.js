@@ -26,7 +26,7 @@ export const actions = {
 				}
 			});
 		} catch (err) {
-			console.log(err);
+			console.log('Error: ' + err);
 			return fail(500, {
 				message: 'Budget Book could not be updated.'
 			});
@@ -44,7 +44,7 @@ export const actions = {
 				}
 			});
 		} catch (err) {
-			console.log(err);
+			console.log('Error: ' + err);
 			return fail(500, {
 				message: 'Budget Book could not be deleted.'
 			});
