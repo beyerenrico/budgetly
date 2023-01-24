@@ -17,6 +17,5 @@ export const categorySchema = z.object({
 export const itemSchema = z.object({
 	title: z.string().min(1, { message: 'Titel erforderlich' }),
 	budgetBook: z.string().min(1, { message: 'Haushaltsbuch erforderlich' }),
-	type: z.string().min(1, { message: 'Typ erforderlich' }),
-	category: z.string().min(1, { message: 'Kategorie erforderlich' })
+	type: z.string().min(1, { message: 'Typ erforderlich' })
 });
