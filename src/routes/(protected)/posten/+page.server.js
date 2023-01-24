@@ -5,6 +5,7 @@ export async function load({ locals }) {
 	const { user } = locals.session;
 
 	return {
+		months: await prisma.month.findMany(),
 		budgetBooks: await prisma.budgetBook.findMany({
 			where: { userId: user.id },
 			include: {

@@ -3,7 +3,7 @@
 
 	export let data;
 
-	$: ({ budgetBooks } = data);
+	$: ({ months, budgetBooks } = data);
 </script>
 
 <header>
@@ -63,16 +63,42 @@
 							<summary>{item.title}</summary>
 							<p>{item.description}</p>
 							<ul>
-								<li>Typ: {item.type}</li>
+								<li>Typ: {item.type === 'EXPENSE' ? 'Ausgabe' : 'Einkommen'}</li>
 								<li>Kategorie: {item.category.title}</li>
-								<ul>
-									{#each item.months as joinElement}
-										<li>
-											{joinElement.month.title}: {joinElement.value}
-										</li>
-									{/each}
-								</ul>
 							</ul>
+							<figure>
+								<table>
+									<tbody>
+										<tr>
+											{#each months.slice(0, 6) as month}
+												<th id={month.id} scope="col">
+													{month.title}
+												</th>
+											{/each}
+										</tr>
+										<tr>
+											{#each item.months.slice(0, 6) as item}
+												<td>{item.value.toFixed(2).toString().replace('.', ',')} €</td>
+											{/each}
+										</tr>
+										<tr>
+											<th colspan="12" />
+										</tr>
+										<tr>
+											{#each months.slice(6, 12) as month}
+												<th id={month.id} scope="col">
+													{month.title}
+												</th>
+											{/each}
+										</tr>
+										<tr>
+											{#each item.months.slice(6, 12) as item}
+												<td>{item.value.toFixed(2).toString().replace('.', ',')} €</td>
+											{/each}
+										</tr>
+									</tbody>
+								</table>
+							</figure>
 							<a
 								href="/posten/{item.id}/edit"
 								role="button"
