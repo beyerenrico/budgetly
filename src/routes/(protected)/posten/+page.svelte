@@ -1,5 +1,5 @@
 <script>
-	import { Pencil, Plus } from 'tabler-icons-svelte';
+	import { Eye, Pencil, Plus } from 'tabler-icons-svelte';
 
 	export let data;
 	export let form;
@@ -59,6 +59,14 @@
 					<section id={budgetBook.id}>
 						<h2 class="icon">
 							{budgetBook.title}
+							<a
+								href="/haushaltsbuecher/{budgetBook.id}"
+								data-tooltip="Haushaltsbuch anzeigen"
+								role="button"
+								class="small"
+							>
+								<Eye strokeWidth={1} />
+							</a>
 							<a
 								href="/posten/new?budgetBook={budgetBook.id}"
 								data-tooltip="Posten hinzufügen"
@@ -130,6 +138,14 @@
 						<h2 class="icon">
 							{budgetBook.title}
 							<a
+								href="/haushaltsbuecher/{budgetBook.id}"
+								data-tooltip="Haushaltsbuch anzeigen"
+								role="button"
+								class="small"
+							>
+								<Eye strokeWidth={1} />
+							</a>
+							<a
 								href="/posten/new?budgetBook={budgetBook.id}"
 								data-tooltip="Posten hinzufügen"
 								role="button"
@@ -145,7 +161,9 @@
 								<p>{item.description}</p>
 								<ul>
 									<li>Typ: {item.type === 'EXPENSE' ? 'Ausgabe' : 'Einkommen'}</li>
-									<li>Kategorie: {item.category.title}</li>
+									{#if item.category}
+										<li>Kategorie: {item.category.title}</li>
+									{/if}
 								</ul>
 								<figure>
 									<table>
