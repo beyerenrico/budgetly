@@ -2,8 +2,10 @@
 	import { Pencil, Plus, Trash } from 'tabler-icons-svelte';
 
 	export let data;
+	export let yearlyTotal = 0;
 
-	$: ({ budgetBook, months, categories, itemsInMonths } = data);
+	$: ({ budgetBook, months, categories, itemsInMonths, incomeItems } = data);
+	$: yearlyTotal = itemsInMonths.reduce((acc, item) => acc + item._sum.value, 0);
 </script>
 
 <header>
@@ -50,10 +52,47 @@
 						</tr>
 					</thead>
 					<tbody>
+						<tr>
+							<th id="INCOME" class="span" colspan="13" scope="colgroup">
+								<h3>Einkommen</h3>
+							</th>
+
+							<th
+								><a
+									href="/posten/new?type=INCOME&budgetBook={budgetBook.id}"
+									data-tooltip="Einkommen hinzufügen"
+									role="button"
+									class="small"
+								>
+									<Plus strokeWidth={1} />
+								</a></th
+							>
+						</tr>
+
+						{#each incomeItems as item}
+							<tr>
+								<th headers="INCOME" id={item.id}>{item.title}</th>
+								{#each item.months as month}
+									<td headers="INCOME {item.id} {month.id}"
+										>{month.value.toFixed(2).toString().replace('.', ',')} €</td
+									>
+								{/each}
+								<th headers="INCOME {item.id} actions">
+									<a
+										href="/posten/{item.id}/edit"
+										data-tooltip="Posten bearbeiten"
+										role="button"
+										class="small secondary"
+									>
+										<Pencil strokeWidth={1} />
+									</a>
+								</th>
+							</tr>
+						{/each}
 						{#each categories as category}
 							<tr>
 								<th id={category.id} class="span" colspan="13" scope="colgroup">
-									{category.title}
+									<h3>{category.title}</h3>
 								</th>
 
 								<th
@@ -80,17 +119,9 @@
 											href="/posten/{item.id}/edit"
 											data-tooltip="Posten bearbeiten"
 											role="button"
-											class="small"
+											class="small secondary"
 										>
 											<Pencil strokeWidth={1} />
-										</a>
-										<a
-											href="/posten/1/delete"
-											data-tooltip="Posten löschen"
-											role="button"
-											class="small danger"
-										>
-											<Trash strokeWidth={1} />
 										</a>
 									</th>
 								</tr>
@@ -101,17 +132,22 @@
 					<tfoot>
 						<tr>
 							<th id="gesamt-ausgaben" class="span" colspan="14" scope="colgroup">
-								Zusammenfassung
+								<h3>Zusammenfassung</h3>
 							</th>
 						</tr>
 						<tr>
 							<th headers="gesamt-ausgaben" id="saldo"> Saldo </th>
 							{#each itemsInMonths as item}
-								<td headers="gesamt-ausgaben saldo {item.monthId}">
+								<td
+									headers="gesamt-ausgaben saldo {item.monthId}"
+									class={item._sum.value < 0 ? 'danger' : 'success'}
+								>
 									{item._sum.value.toFixed(2).toString().replace('.', ',')} €
 								</td>
 							{/each}
-							<td />
+							<th>
+								{yearlyTotal.toFixed(2).toString().replace('.', ',')} €
+							</th>
 						</tr>
 					</tfoot>
 				</table>
@@ -127,6 +163,10 @@
 
 	th {
 		background-color: #121212;
+
+		h3 {
+			margin-bottom: 0;
+		}
 	}
 
 	table {

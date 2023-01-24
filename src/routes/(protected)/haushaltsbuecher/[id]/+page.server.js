@@ -34,6 +34,19 @@ export async function load({ params }) {
 			_sum: {
 				value: true
 			}
+		}),
+		incomeItems: await prisma.item.findMany({
+			where: {
+				budgetBookId: params.id,
+				type: 'INCOME'
+			},
+			include: {
+				months: {
+					orderBy: {
+						rank: 'asc'
+					}
+				}
+			}
 		})
 	};
 }

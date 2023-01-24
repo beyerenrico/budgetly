@@ -58,11 +58,11 @@ export const actions = {
 								}
 							},
 							update: {
-								value: parseFloat(value),
+								value: parseFloat(body.type === 'EXPENSE' ? -value : value),
 								rank: parseInt(ranks.filter((obj) => obj.id === id).map((obj) => obj.value))
 							},
 							create: {
-								value: parseFloat(value),
+								value: parseFloat(body.type === 'EXPENSE' ? -value : value),
 								rank: parseInt(ranks.filter((obj) => obj.id === id).map((obj) => obj.value)),
 								monthId: id,
 								budgetBookId: body.budgetBook

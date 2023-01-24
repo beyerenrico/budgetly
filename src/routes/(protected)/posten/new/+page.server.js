@@ -51,7 +51,7 @@ export const actions = {
 					userId: user.id,
 					months: {
 						create: months.map(({ id, value }) => ({
-							value: parseFloat(value),
+							value: parseFloat(body.type === 'EXPENSE' ? -value : value),
 							rank: parseInt(ranks.filter((obj) => obj.id === id).map((obj) => obj.value)),
 							monthId: id,
 							budgetBookId: body.budgetBook
