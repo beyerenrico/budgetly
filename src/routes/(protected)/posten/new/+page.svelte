@@ -1,7 +1,37 @@
 <script>
-	import { ArrowUpRight, Trash } from 'tabler-icons-svelte';
+	import { ArrowUpRight } from 'tabler-icons-svelte';
+	import { enhance } from '$app/forms';
+	import toast from 'svelte-french-toast';
 
 	export let data;
+	export let form;
+
+	let loading = false;
+
+	const submitForm = () => {
+		loading = true;
+		return async ({ result, update }) => {
+			switch (result.type) {
+				case 'redirect':
+					toast.success('Posten wurde erstellt');
+					await update();
+					break;
+				case 'failure':
+					toast.error('Es gibt ungültige Angaben', {
+						duration: 6000
+					});
+					await update();
+					break;
+				case 'error':
+					toast.error('Es ist ein Fehler aufgetreten');
+					break;
+				default:
+					await update();
+			}
+
+			loading = false;
+		};
+	};
 
 	$: ({ months, categories, budgetBooks } = data);
 </script>
@@ -24,41 +54,91 @@
 </nav>
 <main>
 	<div class="container-fluid">
-		<form action="?/create" method="POST">
+		<form action="?/create" method="POST" use:enhance={submitForm}>
 			<div class="container">
 				<label for="title">
 					Titel
-					<input type="text" id="title" name="title" placeholder="Titel" required />
+					<input
+						type="text"
+						id="title"
+						name="title"
+						placeholder="Titel"
+						aria-busy={loading}
+						aria-invalid={form?.error ? true : ''}
+					/>
+					{#if form?.errors}
+						{#each form.errors as error}
+							{#if error.field === 'title'}
+								<small class="danger">{error.message}</small>
+							{/if}
+						{/each}
+					{/if}
 				</label>
 				<label for="description">
 					Beschreibung
-					<textarea name="description" id="description" cols="30" rows="5" />
+					<textarea name="description" id="description" cols="30" rows="5" aria-busy={loading} />
 				</label>
 
 				<label for="budgetBook"> Haushaltsbuch </label>
-				<select name="budgetBook" id="budgetBook">
+				<select
+					name="budgetBook"
+					id="budgetBook"
+					aria-busy={loading}
+					aria-invalid={form?.error ? true : ''}
+				>
 					<option value="">Haushaltsbuch auswählen</option>
 					{#each budgetBooks as budgetBook}
 						<option value={budgetBook.id}>{budgetBook.title}</option>
 					{/each}
 				</select>
+				{#if form?.errors}
+					{#each form.errors as error}
+						{#if error.field === 'budgetBook'}
+							<small class="danger">{error.message}</small>
+						{/if}
+					{/each}
+				{/if}
 				<div class="grid">
 					<div>
 						<label for="type"> Typ </label>
-						<select name="type" id="type">
+						<select
+							name="type"
+							id="type"
+							aria-busy={loading}
+							aria-invalid={form?.error ? true : ''}
+						>
 							<option value="">Typ auswählen</option>
 							<option value="EXPENSE" selected>Ausgabe</option>
 							<option value="INCOME">Einnahme</option>
 						</select>
+						{#if form?.errors}
+							{#each form.errors as error}
+								{#if error.field === 'type'}
+									<small class="danger">{error.message}</small>
+								{/if}
+							{/each}
+						{/if}
 					</div>
 					<div>
 						<label for="category"> Kategorie </label>
-						<select name="category" id="category">
+						<select
+							name="category"
+							id="category"
+							aria-busy={loading}
+							aria-invalid={form?.error ? true : ''}
+						>
 							<option value="">Kategorie auswählen</option>
 							{#each categories as category}
 								<option value={category.id}>{category.title}</option>
 							{/each}
 						</select>
+						{#if form?.errors}
+							{#each form.errors as error}
+								{#if error.field === 'category'}
+									<small class="danger">{error.message}</small>
+								{/if}
+							{/each}
+						{/if}
 						<small>
 							<a href="/kategorien/new" target="_blank">
 								Neue Kategorie erstellen
@@ -83,13 +163,14 @@
 										id={month.id}
 										placeholder="10"
 										value="0"
+										aria-busy={loading}
 									/>
 								</label>
 							</div>
 						{/each}
 					</div>
 				</fieldset>
-				<button type="submit">Erstellen</button>
+				<button type="submit" aria-busy={loading}>Erstellen</button>
 			</div>
 		</form>
 	</div>

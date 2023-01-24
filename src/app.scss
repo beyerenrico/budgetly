@@ -1,12 +1,16 @@
 :root {
 	--grid-spacing-vertical: 1rem;
-	--danger: red;
+	--danger: var(--form-element-invalid-border-color);
 	--danger-inverse: white;
 	--success: green;
 	--success-inverse: white;
 	--card-background-color-light: #18232c;
 	--card-background-color-light-hover: #243440;
 	--header-background-color: #121212;
+}
+
+.danger {
+	color: var(--danger);
 }
 
 nav {

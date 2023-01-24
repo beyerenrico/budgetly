@@ -21,7 +21,7 @@ model User {
 model BudgetBook {
   id          String          @id @default(uuid())
   title       String
-  description String
+  description String?
   year        Int
   userId      String
   createdAt   DateTime        @default(now())
@@ -34,7 +34,7 @@ model BudgetBook {
 model Category {
   id          String    @id @default(uuid())
   title       String
-  description String
+  description String?
   userId      String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime?
@@ -45,7 +45,7 @@ model Category {
 model Item {
   id           String          @id @default(uuid())
   title        String
-  description  String
+  description  String?
   budgetBookId String
   categoryId   String?
   userId       String

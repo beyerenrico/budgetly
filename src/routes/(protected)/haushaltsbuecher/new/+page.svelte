@@ -1,4 +1,35 @@
 <script>
+	import { enhance } from '$app/forms';
+	import toast from 'svelte-french-toast';
+
+	export let form;
+
+	let loading = false;
+
+	const submitForm = () => {
+		loading = true;
+		return async ({ result, update }) => {
+			switch (result.type) {
+				case 'redirect':
+					toast.success('Haushaltsbuch wurde erstellt');
+					await update();
+					break;
+				case 'failure':
+					toast.error('Es gibt ungültige Angaben', {
+						duration: 6000
+					});
+					await update();
+					break;
+				case 'error':
+					toast.error('Es ist ein Fehler aufgetreten');
+					break;
+				default:
+					await update();
+			}
+
+			loading = false;
+		};
+	};
 </script>
 
 <header>
@@ -19,11 +50,24 @@
 </nav>
 <main>
 	<div class="container-fluid">
-		<form action="?/create" method="POST">
+		<form action="?/create" method="POST" use:enhance={submitForm}>
 			<div class="container">
 				<label for="title">
 					Titel
-					<input type="text" id="title" name="title" placeholder="Titel" required />
+					<input
+						type="text"
+						id="title"
+						name="title"
+						placeholder="Titel"
+						aria-invalid={form?.error ? true : ''}
+					/>
+					{#if form?.errors}
+						{#each form.errors as error}
+							{#if error.field === 'title'}
+								<small class="danger">{error.message}</small>
+							{/if}
+						{/each}
+					{/if}
 				</label>
 				<label for="description">
 					Beschreibung
@@ -31,9 +75,22 @@
 				</label>
 				<label for="year">
 					Jahr
-					<input type="number" name="year" id="year" placeholder={new Date().getFullYear()} />
+					<input
+						type="number"
+						name="year"
+						id="year"
+						placeholder={new Date().getFullYear()}
+						aria-invalid={form?.error ? true : ''}
+					/>
+					{#if form?.errors}
+						{#each form.errors as error}
+							{#if error.field === 'year'}
+								<small class="danger">{error.message}</small>
+							{/if}
+						{/each}
+					{/if}
 				</label>
-				<button type="submit">Erstellen</button>
+				<button type="submit" aria-busy={loading}>Erstellen</button>
 			</div>
 		</form>
 	</div>

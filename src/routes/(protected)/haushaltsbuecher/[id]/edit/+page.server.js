@@ -1,10 +1,24 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { prisma } from '$lib/server/prisma';
+import { budgetBookSchema } from '$lib/utils/schema';
 
 /** @type {import('./$types').Actions} */
 export const actions = {
 	update: async ({ request, locals, params }) => {
 		const body = Object.fromEntries(await request.formData());
+
+		const validate = budgetBookSchema.safeParse(body);
+
+		if (!validate.success) {
+			const errors = validate.error.errors.map((error) => {
+				return {
+					field: error.path[0],
+					message: error.message
+				};
+			});
+
+			return fail(400, { error: true, errors });
+		}
 
 		const { user } = locals.session;
 
@@ -32,9 +46,7 @@ export const actions = {
 			});
 		}
 
-		return {
-			status: 201
-		};
+		throw redirect(303, '/haushaltsbuecher');
 	},
 	delete: async ({ params }) => {
 		try {

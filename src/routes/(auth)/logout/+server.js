@@ -8,5 +8,5 @@ export async function POST({ locals }) {
 		throw error(500, 'Something went wrong logging you out.');
 	}
 
-	throw redirect(303, '/');
+	throw redirect(303, '/login');
 }

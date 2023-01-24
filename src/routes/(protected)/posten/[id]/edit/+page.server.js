@@ -1,10 +1,24 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { prisma } from '$lib/server/prisma';
+import { itemSchema } from '$lib/utils/schema';
 
 /** @type {import('./$types').Actions} */
 export const actions = {
 	update: async ({ request, params }) => {
 		const body = Object.fromEntries(await request.formData());
+
+		const validate = itemSchema.safeParse(body);
+
+		if (!validate.success) {
+			const errors = validate.error.errors.map((error) => {
+				return {
+					field: error.path[0],
+					message: error.message
+				};
+			});
+
+			return fail(400, { error: true, errors });
+		}
 
 		const months = Object.entries(body)
 			.filter(([key]) => key.startsWith('months:'))
@@ -64,9 +78,7 @@ export const actions = {
 			});
 		}
 
-		return {
-			status: 201
-		};
+		throw redirect(303, '/posten');
 	},
 	delete: async ({ params }) => {
 		try {

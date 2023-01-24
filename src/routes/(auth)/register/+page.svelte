@@ -1,8 +1,10 @@
 <script>
 	import { enhance } from '$app/forms';
 	import toast from 'svelte-french-toast';
+
+	export let form;
+
 	let loading = false;
-	let hasErrors = false;
 
 	const submitRegister = () => {
 		loading = true;
@@ -13,7 +15,6 @@
 					await update();
 					break;
 				case 'failure':
-					hasErrors = true;
 					toast.error('Ungültige Daten', {
 						duration: 6000
 					});
@@ -43,8 +44,15 @@
 					id="email"
 					placeholder="max@mustermann.de"
 					disabled={loading}
-					aria-invalid={hasErrors ? true : ''}
+					aria-invalid={form?.error ? true : ''}
 				/>
+				{#if form?.errors}
+					{#each form.errors as error}
+						{#if error.field === 'email'}
+							<small class="danger">{error.message}</small>
+						{/if}
+					{/each}
+				{/if}
 			</label>
 			<label for="password">
 				Passwort
@@ -54,10 +62,17 @@
 					id="password"
 					placeholder="********"
 					disabled={loading}
-					aria-invalid={hasErrors ? true : ''}
+					aria-invalid={form?.error ? true : ''}
 				/>
+				{#if form?.errors}
+					{#each form.errors as error}
+						{#if error.field === 'password'}
+							<small class="danger">{error.message}</small>
+						{/if}
+					{/each}
+				{/if}
 			</label>
-			<button type="submit" disabled={loading}>Benutzer erstellen</button>
+			<button type="submit" aria-busy={loading}>Benutzer erstellen</button>
 			<small>
 				<a href="/login"> Sie haben bereits einen Account? Jetzt anmelden! </a>
 			</small>

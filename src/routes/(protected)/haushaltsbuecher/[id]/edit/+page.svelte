@@ -1,7 +1,37 @@
 <script>
 	import { Trash } from 'tabler-icons-svelte';
+	import { enhance } from '$app/forms';
+	import toast from 'svelte-french-toast';
 
 	export let data;
+	export let form;
+
+	let loading = false;
+
+	const submitForm = () => {
+		loading = true;
+		return async ({ result, update }) => {
+			switch (result.type) {
+				case 'redirect':
+					toast.success('Haushaltsbuch wurde aktualisiert');
+					await update();
+					break;
+				case 'failure':
+					toast.error('Es gibt ungültige Angaben', {
+						duration: 6000
+					});
+					await update();
+					break;
+				case 'error':
+					toast.error('Es ist ein Fehler aufgetreten');
+					break;
+				default:
+					await update();
+			}
+
+			loading = false;
+		};
+	};
 
 	$: ({ budgetBook } = data);
 </script>
@@ -32,7 +62,7 @@
 </nav>
 <main>
 	<div class="container-fluid">
-		<form action="?/update" method="POST">
+		<form action="?/update" method="POST" use:enhance={submitForm}>
 			<div class="container">
 				<label for="title">
 					Titel
@@ -41,9 +71,16 @@
 						id="title"
 						name="title"
 						placeholder="Titel"
-						required
 						value={budgetBook.title}
+						aria-invalid={form?.error ? true : ''}
 					/>
+					{#if form?.errors}
+						{#each form.errors as error}
+							{#if error.field === 'title'}
+								<small class="danger">{error.message}</small>
+							{/if}
+						{/each}
+					{/if}
 				</label>
 				<label for="description">
 					Beschreibung
@@ -59,9 +96,17 @@
 						id="year"
 						placeholder={new Date().getFullYear()}
 						value={budgetBook.year}
+						aria-invalid={form?.error ? true : ''}
 					/>
+					{#if form?.errors}
+						{#each form.errors as error}
+							{#if error.field === 'year'}
+								<small class="danger">{error.message}</small>
+							{/if}
+						{/each}
+					{/if}
 				</label>
-				<button type="submit">Aktualisieren</button>
+				<button type="submit" aria-busy={loading}>Aktualisieren</button>
 			</div>
 		</form>
 		<form action="?/delete" method="POST">

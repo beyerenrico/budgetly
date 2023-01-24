@@ -1,10 +1,24 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { prisma } from '$lib/server/prisma';
+import { itemSchema } from '$lib/utils/schema';
 
 /** @type {import('./$types').Actions} */
 export const actions = {
 	create: async ({ request, locals }) => {
 		const body = Object.fromEntries(await request.formData());
+
+		const validate = itemSchema.safeParse(body);
+
+		if (!validate.success) {
+			const errors = validate.error.errors.map((error) => {
+				return {
+					field: error.path[0],
+					message: error.message
+				};
+			});
+
+			return fail(400, { error: true, errors });
+		}
 
 		const { user } = locals.session;
 
@@ -48,7 +62,7 @@ export const actions = {
 		} catch (err) {
 			console.log('Error: ' + err);
 			return fail(500, {
-				message: 'Category could not be created.'
+				message: 'Item could not be created.'
 			});
 		}
 
