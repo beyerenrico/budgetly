@@ -8,6 +8,7 @@
 	export let form;
 
 	let loading = false;
+	let currentType = 'EXPENSE';
 
 	const submitForm = () => {
 		loading = true;
@@ -32,6 +33,12 @@
 
 			loading = false;
 		};
+	};
+
+	const changeType = (event) => {
+		const type = event.target.value;
+
+		currentType = type;
 	};
 
 	$: ({ months, categories, budgetBooks } = data);
@@ -109,6 +116,7 @@
 							id="type"
 							aria-busy={loading}
 							aria-invalid={form?.error ? true : ''}
+							on:change={changeType}
 						>
 							<option value="">Typ auswählen</option>
 							<option value="EXPENSE" selected>Ausgabe</option>
@@ -122,35 +130,39 @@
 							{/each}
 						{/if}
 					</div>
-					<div>
-						<label for="category"> Kategorie </label>
-						<select
-							name="category"
-							id="category"
-							aria-busy={loading}
-							aria-invalid={form?.error ? true : ''}
-						>
-							<option value="">Kategorie auswählen</option>
-							{#each categories as category}
-								<option value={category.id} selected={$page.url.searchParams.get('category')}
-									>{category.title}</option
-								>
-							{/each}
-						</select>
-						{#if form?.errors}
-							{#each form.errors as error}
-								{#if error.field === 'category'}
-									<small class="danger">{error.message}</small>
-								{/if}
-							{/each}
-						{/if}
-						<small>
-							<a href="/kategorien/new" target="_blank">
-								Neue Kategorie erstellen
-								<ArrowUpRight strokeWidth={1} />
-							</a>
-						</small>
-					</div>
+					{#if currentType === 'EXPENSE'}
+						<div>
+							<label for="category"> Kategorie </label>
+							<select
+								name="category"
+								id="category"
+								aria-busy={loading}
+								aria-invalid={form?.error ? true : ''}
+							>
+								<option value="">Kategorie auswählen</option>
+								{#each categories as category}
+									<option
+										value={category.id}
+										selected={$page.url.searchParams.get('category') === category.id}
+										>{category.title}</option
+									>
+								{/each}
+							</select>
+							{#if form?.errors}
+								{#each form.errors as error}
+									{#if error.field === 'category'}
+										<small class="danger">{error.message}</small>
+									{/if}
+								{/each}
+							{/if}
+							<small>
+								<a href="/kategorien/new" target="_blank">
+									Neue Kategorie erstellen
+									<ArrowUpRight strokeWidth={1} />
+								</a>
+							</small>
+						</div>
+					{/if}
 				</div>
 				<fieldset>
 					<legend>Monate</legend>
