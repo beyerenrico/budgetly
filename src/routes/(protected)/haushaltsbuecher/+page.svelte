@@ -2,6 +2,7 @@
 	import { Pencil } from 'tabler-icons-svelte';
 
 	export let data;
+	export let form;
 
 	$: ({ budgetBooks } = data);
 </script>
@@ -23,34 +24,56 @@
 <main>
 	<div class="container">
 		<section>
-			<form action="search">
+			<form action="?/search" method="POST">
 				<label for="searchHaushaltsbuecher">
 					<input
 						type="search"
 						name="searchHaushaltsbuecher"
 						id="searchHaushaltsbuecher"
 						placeholder="Haushaltsbücher suchen..."
+						value={form?.body.searchHaushaltsbuecher ?? ''}
 					/>
 				</label>
 				<button type="submit">Suchen</button>
+				{#if form?.body.searchHaushaltsbuecher}
+					<small>Sie suchten nach: "{form?.body.searchHaushaltsbuecher}"</small>
+				{/if}
 			</form>
 		</section>
 		<section id="results">
-			{#each budgetBooks as budgetBook}
-				<h2 class="icon">
-					<a href="/haushaltsbuecher/{budgetBook.id}"> {budgetBook.title} </a>
-					<a
-						href="/haushaltsbuecher/{budgetBook.id}/edit"
-						data-tooltip="Haushaltsbuch bearbeiten"
-						role="button"
-						class="small"
-					>
-						<Pencil strokeWidth={1} />
-					</a>
-				</h2>
+			{#if form?.filteredHaushaltsbuecher}
+				{#each form?.filteredHaushaltsbuecher as budgetBook}
+					<h2 class="icon">
+						<a href="/haushaltsbuecher/{budgetBook.id}"> {budgetBook.title} </a>
+						<a
+							href="/haushaltsbuecher/{budgetBook.id}/edit"
+							data-tooltip="Haushaltsbuch bearbeiten"
+							role="button"
+							class="small"
+						>
+							<Pencil strokeWidth={1} />
+						</a>
+					</h2>
+				{:else}
+					Es wurden bisher keine Haushaltsbücher erstellt
+				{/each}
 			{:else}
-				Es wurden bisher keine Haushaltsbücher erstellt
-			{/each}
+				{#each budgetBooks as budgetBook}
+					<h2 class="icon">
+						<a href="/haushaltsbuecher/{budgetBook.id}"> {budgetBook.title} </a>
+						<a
+							href="/haushaltsbuecher/{budgetBook.id}/edit"
+							data-tooltip="Haushaltsbuch bearbeiten"
+							role="button"
+							class="small"
+						>
+							<Pencil strokeWidth={1} />
+						</a>
+					</h2>
+				{:else}
+					Es wurden bisher keine Haushaltsbücher erstellt
+				{/each}
+			{/if}
 		</section>
 	</div>
 </main>

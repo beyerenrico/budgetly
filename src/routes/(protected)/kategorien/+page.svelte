@@ -2,6 +2,7 @@
 	import { Pencil } from 'tabler-icons-svelte';
 
 	export let data;
+	export let form;
 
 	$: ({ categories } = data);
 </script>
@@ -23,34 +24,56 @@
 <main>
 	<div class="container">
 		<section>
-			<form action="search">
+			<form action="?/search" method="POST">
 				<label for="searchCategories">
 					<input
 						type="search"
 						name="searchCategories"
 						id="searchCategories"
 						placeholder="Kategorien suchen..."
+						value={form?.body.searchCategories ?? ''}
 					/>
 				</label>
 				<button type="submit">Suchen</button>
+				{#if form?.body.searchCategories}
+					<small>Sie suchten nach: "{form?.body.searchCategories}"</small>
+				{/if}
 			</form>
 		</section>
 		<section id="results">
-			{#each categories as category}
-				<h2 class="icon">
-					{category.title}
-					<a
-						href="/kategorien/{category.id}/edit"
-						data-tooltip="Kategorie bearbeiten"
-						role="button"
-						class="small"
-					>
-						<Pencil strokeWidth={1} />
-					</a>
-				</h2>
+			{#if form?.filteredCategories}
+				{#each form?.filteredCategories as category}
+					<h2 class="icon">
+						{category.title}
+						<a
+							href="/kategorien/{category.id}/edit"
+							data-tooltip="Kategorie bearbeiten"
+							role="button"
+							class="small"
+						>
+							<Pencil strokeWidth={1} />
+						</a>
+					</h2>
+				{:else}
+					Es wurden bisher keine Kategorien erstellt
+				{/each}
 			{:else}
-				Es wurden bisher keine Kategorien erstellt
-			{/each}
+				{#each categories as category}
+					<h2 class="icon">
+						{category.title}
+						<a
+							href="/kategorien/{category.id}/edit"
+							data-tooltip="Kategorie bearbeiten"
+							role="button"
+							class="small"
+						>
+							<Pencil strokeWidth={1} />
+						</a>
+					</h2>
+				{:else}
+					Es wurden bisher keine Kategorien erstellt
+				{/each}
+			{/if}
 		</section>
 	</div>
 </main>

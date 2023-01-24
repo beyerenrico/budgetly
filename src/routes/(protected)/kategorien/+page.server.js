@@ -12,3 +12,30 @@ export async function load({ locals }) {
 		})
 	};
 }
+
+/** @type {import('./$types').Actions} */
+export const actions = {
+	search: async ({ request, locals }) => {
+		const { user } = locals.session;
+
+		const body = Object.fromEntries(await request.formData());
+
+		const filterSearch = body.searchCategories
+			? { title: { contains: body.searchCategories, mode: 'insensitive' } }
+			: {};
+
+		return {
+			body,
+			filteredCategories: await prisma.category.findMany({
+				where: {
+					AND: [
+						{
+							userId: user.id
+						},
+						filterSearch
+					]
+				}
+			})
+		};
+	}
+};

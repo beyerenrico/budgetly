@@ -2,6 +2,7 @@
 	import { Pencil, Plus } from 'tabler-icons-svelte';
 
 	export let data;
+	export let form;
 
 	$: ({ months, budgetBooks } = data);
 </script>
@@ -23,13 +24,14 @@
 <main>
 	<div class="container">
 		<section>
-			<form action="search">
+			<form action="?/search" method="POST">
 				<label for="searchPosten">
 					<input
 						type="search"
 						name="searchPosten"
 						id="searchPosten"
 						placeholder="Posten suchen..."
+						value={form?.body.searchPosten ?? ''}
 					/>
 				</label>
 				<div class="grid">
@@ -37,82 +39,152 @@
 						<select name="budgetBook" id="budgetBook">
 							<option value="">Alle Haushaltsbücher anzeigen</option>
 							{#each budgetBooks as budgetBook}
-								<option value={budgetBook.id}>{budgetBook.title}</option>
+								<option value={budgetBook.id} selected={form?.body.budgetBook === budgetBook.id}
+									>{budgetBook.title}</option
+								>
 							{/each}
 						</select>
 					</div>
 
-					<div>
-						<button type="submit">Suchen</button>
-					</div>
+					<button type="submit">Suchen</button>
 				</div>
+				{#if form?.body.searchPosten}
+					<small>Sie suchten nach: "{form?.body.searchPosten}"</small>
+				{/if}
 			</form>
 		</section>
 		<section id="results">
-			{#each budgetBooks as budgetBook}
-				<section id={budgetBook.id}>
-					<h2 class="icon">
-						{budgetBook.title}
-						<a href="/posten/new" data-tooltip="Posten hinzufügen" role="button" class="small">
-							<Plus strokeWidth={1} />
-						</a>
-					</h2>
-
-					{#each budgetBook.items as item}
-						<details>
-							<summary>{item.title}</summary>
-							<p>{item.description}</p>
-							<ul>
-								<li>Typ: {item.type === 'EXPENSE' ? 'Ausgabe' : 'Einkommen'}</li>
-								<li>Kategorie: {item.category.title}</li>
-							</ul>
-							<figure>
-								<table>
-									<tbody>
-										<tr>
-											{#each months.slice(0, 6) as month}
-												<th id={month.id} scope="col">
-													{month.title}
-												</th>
-											{/each}
-										</tr>
-										<tr>
-											{#each item.months.slice(0, 6) as item}
-												<td>{item.value.toFixed(2).toString().replace('.', ',')} €</td>
-											{/each}
-										</tr>
-										<tr>
-											<th colspan="12" />
-										</tr>
-										<tr>
-											{#each months.slice(6, 12) as month}
-												<th id={month.id} scope="col">
-													{month.title}
-												</th>
-											{/each}
-										</tr>
-										<tr>
-											{#each item.months.slice(6, 12) as item}
-												<td>{item.value.toFixed(2).toString().replace('.', ',')} €</td>
-											{/each}
-										</tr>
-									</tbody>
-								</table>
-							</figure>
-							<a
-								href="/posten/{item.id}/edit"
-								role="button"
-								class="outline small"
-								data-tooltip="Posten bearbeiten"
-							>
-								<Pencil strokeWidth={1} />
+			{#if form?.filteredBudgetBooks}
+				{#each form?.filteredBudgetBooks as budgetBook}
+					<section id={budgetBook.id}>
+						<h2 class="icon">
+							{budgetBook.title}
+							<a href="/posten/new" data-tooltip="Posten hinzufügen" role="button" class="small">
+								<Plus strokeWidth={1} />
 							</a>
-						</details>
-					{/each}
-				</section>
+						</h2>
+
+						{#each budgetBook.items as item}
+							<details>
+								<summary>{item.title}</summary>
+								<p>{item.description}</p>
+								<ul>
+									<li>Typ: {item.type === 'EXPENSE' ? 'Ausgabe' : 'Einkommen'}</li>
+									<li>Kategorie: {item.category.title}</li>
+								</ul>
+								<figure>
+									<table>
+										<tbody>
+											<tr>
+												{#each months.slice(0, 6) as month}
+													<th id={month.id} scope="col">
+														{month.title}
+													</th>
+												{/each}
+											</tr>
+											<tr>
+												{#each item.months.slice(0, 6) as item}
+													<td>{item.value.toFixed(2).toString().replace('.', ',')} €</td>
+												{/each}
+											</tr>
+											<tr>
+												<th colspan="12" />
+											</tr>
+											<tr>
+												{#each months.slice(6, 12) as month}
+													<th id={month.id} scope="col">
+														{month.title}
+													</th>
+												{/each}
+											</tr>
+											<tr>
+												{#each item.months.slice(6, 12) as item}
+													<td>{item.value.toFixed(2).toString().replace('.', ',')} €</td>
+												{/each}
+											</tr>
+										</tbody>
+									</table>
+								</figure>
+								<a
+									href="/posten/{item.id}/edit"
+									role="button"
+									class="outline small"
+									data-tooltip="Posten bearbeiten"
+								>
+									<Pencil strokeWidth={1} />
+								</a>
+							</details>
+						{/each}
+					</section>
+				{:else}
+					Es wurden bisher keine Posten erstellt
+				{/each}
 			{:else}
-				Es wurden bisher keine Posten erstellt
-			{/each}
+				{#each budgetBooks as budgetBook}
+					<section id={budgetBook.id}>
+						<h2 class="icon">
+							{budgetBook.title}
+							<a href="/posten/new" data-tooltip="Posten hinzufügen" role="button" class="small">
+								<Plus strokeWidth={1} />
+							</a>
+						</h2>
+
+						{#each budgetBook.items as item}
+							<details>
+								<summary>{item.title}</summary>
+								<p>{item.description}</p>
+								<ul>
+									<li>Typ: {item.type === 'EXPENSE' ? 'Ausgabe' : 'Einkommen'}</li>
+									<li>Kategorie: {item.category.title}</li>
+								</ul>
+								<figure>
+									<table>
+										<tbody>
+											<tr>
+												{#each months.slice(0, 6) as month}
+													<th id={month.id} scope="col">
+														{month.title}
+													</th>
+												{/each}
+											</tr>
+											<tr>
+												{#each item.months.slice(0, 6) as item}
+													<td>{item.value.toFixed(2).toString().replace('.', ',')} €</td>
+												{/each}
+											</tr>
+											<tr>
+												<th colspan="12" />
+											</tr>
+											<tr>
+												{#each months.slice(6, 12) as month}
+													<th id={month.id} scope="col">
+														{month.title}
+													</th>
+												{/each}
+											</tr>
+											<tr>
+												{#each item.months.slice(6, 12) as item}
+													<td>{item.value.toFixed(2).toString().replace('.', ',')} €</td>
+												{/each}
+											</tr>
+										</tbody>
+									</table>
+								</figure>
+								<a
+									href="/posten/{item.id}/edit"
+									role="button"
+									class="outline small"
+									data-tooltip="Posten bearbeiten"
+								>
+									<Pencil strokeWidth={1} />
+								</a>
+							</details>
+						{/each}
+					</section>
+				{:else}
+					Es wurden bisher keine Posten erstellt
+				{/each}
+			{/if}
 		</section>
 	</div>
 </main>
