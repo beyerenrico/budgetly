@@ -3,6 +3,17 @@ import { fail, redirect } from '@sveltejs/kit';
 import { getServerSession } from '@supabase/auth-helpers-sveltekit';
 import { authSchema } from '$lib/utils/schema';
 
+/** @type {import('./$types').PageLoad} */
+export async function load(event) {
+	const session = await getServerSession(event);
+
+	const { locals } = event;
+
+	if (session) {
+		throw redirect(303, '/');
+	}
+}
+
 /** @type {import('./$types').Actions} */
 export const actions = {
 	login: async ({ request, locals }) => {
@@ -38,12 +49,3 @@ export const actions = {
 		throw redirect(303, '/');
 	}
 };
-
-/** @type {import('./$types').PageLoad} */
-export async function load(event) {
-	const session = await getServerSession(event);
-
-	if (session) {
-		throw redirect(303, '/');
-	}
-}
