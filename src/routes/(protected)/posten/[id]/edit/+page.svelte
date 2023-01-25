@@ -19,7 +19,7 @@
 					await update();
 					break;
 				case 'failure':
-					toast.error(result.data.message, {
+					toast.error('Überprüfen Sie bitte die Eingabewerte', {
 						duration: 6000
 					});
 					await update();
