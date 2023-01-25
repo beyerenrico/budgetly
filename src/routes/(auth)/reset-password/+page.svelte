@@ -30,13 +30,10 @@
 	};
 </script>
 
-<header>
-	<h1>Passwort zurücksetzen</h1>
-</header>
 <main>
 	<div class="container">
+		<h1>Passwort zurücksetzen</h1>
 		<form action="?/resetPassword" method="POST" use:enhance={submitPasswordReset}>
-			<h2>Bitte geben Sie Ihre E-Mail-Adresse an</h2>
 			<label for="email">
 				E-Mail-Adresse
 				<input type="email" name="email" id="email" placeholder="max.mustermann@gmx.de" />
@@ -47,7 +44,4 @@
 </main>
 
 <style>
-	header {
-		text-align: center;
-	}
 </style>
