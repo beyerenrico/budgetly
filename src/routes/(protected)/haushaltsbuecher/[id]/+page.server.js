@@ -1,7 +1,9 @@
 import { prisma } from '$lib/server/prisma';
 
 /** @type {import('./$types').PageLoad} */
-export async function load({ params }) {
+export async function load({ params, parent }) {
+	await parent();
+
 	return {
 		budgetBook: await prisma.budgetBook.findUnique({
 			where: { id: params.id }

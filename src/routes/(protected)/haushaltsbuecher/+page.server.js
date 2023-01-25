@@ -1,7 +1,9 @@
 import { prisma } from '$lib/server/prisma';
 
 /** @type {import('./$types').PageLoad} */
-export async function load({ locals }) {
+export async function load({ locals, parent }) {
+	await parent();
+
 	const { user } = locals.session;
 
 	return {

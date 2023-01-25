@@ -2,6 +2,21 @@ import { fail, redirect } from '@sveltejs/kit';
 import { prisma } from '$lib/server/prisma';
 import { itemSchema } from '$lib/utils/schema';
 
+/** @type {import('./$types').PageLoad} */
+export async function load({ locals, parent }) {
+	await parent();
+
+	const { user } = locals.session;
+
+	return {
+		months: await prisma.month.findMany(),
+		categories: await prisma.category.findMany(),
+		budgetBooks: await prisma.budgetBook.findMany({
+			where: { userId: user.id }
+		})
+	};
+}
+
 /** @type {import('./$types').Actions} */
 export const actions = {
 	create: async ({ request, locals }) => {

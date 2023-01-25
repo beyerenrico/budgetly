@@ -2,6 +2,19 @@ import { fail, redirect } from '@sveltejs/kit';
 import { prisma } from '$lib/server/prisma';
 import { budgetBookSchema } from '$lib/utils/schema';
 
+/** @type {import('./$types').PageLoad} */
+export async function load({ params, parent }) {
+	await parent();
+
+	return {
+		budgetBook: await prisma.budgetBook.findUnique({
+			where: {
+				id: params.id
+			}
+		})
+	};
+}
+
 /** @type {import('./$types').Actions} */
 export const actions = {
 	update: async ({ request, locals, params }) => {

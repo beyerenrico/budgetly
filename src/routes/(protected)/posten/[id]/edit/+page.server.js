@@ -2,6 +2,31 @@ import { fail, redirect } from '@sveltejs/kit';
 import { prisma } from '$lib/server/prisma';
 import { itemSchema } from '$lib/utils/schema';
 
+/** @type {import('./$types').PageLoad} */
+export async function load({ params, locals, parent }) {
+	await parent();
+
+	const { user } = locals.session;
+
+	return {
+		months: await prisma.month.findMany(),
+		categories: await prisma.category.findMany(),
+		budgetBooks: await prisma.budgetBook.findMany({
+			where: { userId: user.id }
+		}),
+		item: await prisma.item.findUnique({
+			where: {
+				id: params.id
+			},
+			include: {
+				budgetBook: true,
+				category: true,
+				months: true
+			}
+		})
+	};
+}
+
 /** @type {import('./$types').Actions} */
 export const actions = {
 	update: async ({ request, params }) => {

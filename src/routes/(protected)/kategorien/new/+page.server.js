@@ -2,6 +2,11 @@ import { fail, redirect } from '@sveltejs/kit';
 import { prisma } from '$lib/server/prisma';
 import { categorySchema } from '$lib/utils/schema';
 
+/** @type {import('./$types').PageLoad} */
+export async function load({ parent }) {
+	await parent();
+}
+
 /** @type {import('./$types').Actions} */
 export const actions = {
 	create: async ({ request, locals }) => {
