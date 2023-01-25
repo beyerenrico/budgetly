@@ -84,8 +84,6 @@ export const actions = {
 	createAndVerifyChallenge: async ({ request, locals }) => {
 		const body = Object.fromEntries(await request.formData());
 
-		console.log(body);
-
 		const { data, error: err } = await locals.sb.auth.mfa.challengeAndVerify({
 			factorId: body.factorId,
 			code: body.code
