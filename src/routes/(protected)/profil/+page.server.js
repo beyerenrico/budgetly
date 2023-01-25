@@ -80,5 +80,21 @@ export const actions = {
 		return {
 			status: 201
 		};
+	},
+	createAndVerifyChallenge: async ({ request, locals }) => {
+		const body = Object.fromEntries(await request.formData());
+
+		console.log(body);
+
+		const { data, error: err } = await locals.sb.auth.mfa.challengeAndVerify({
+			factorId: body.factorId,
+			code: body.code
+		});
+
+		if (err) {
+			fail(500, { message: err });
+		}
+
+		console.log(data);
 	}
 };

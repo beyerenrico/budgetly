@@ -1,15 +1,32 @@
 <script>
+	import countdownTimer from '$lib/utils/countDown.js';
+	import { factorStore } from '$lib/utils/factorStore.js';
 	import { enhance } from '$app/forms';
 	import { supabaseClient } from '$lib/supabase.js';
+	import { fail } from '@sveltejs/kit';
 	import toast from 'svelte-french-toast';
+
+	const OAUTH_PROVIDERS = ['google', 'github'];
 
 	export let data;
 	export let form;
 
+	let factorLoading = false;
 	let emailLoading = false;
 	let passwordLoading = false;
 	let emailChangeSuccessful = false;
 	let passwordChangeSuccessful = false;
+
+	let currentEmailInput;
+	let currentEmailConfirmInput;
+	let currentPasswordInput;
+	let currentPasswordConfirmInput;
+	let userMetadata;
+	let appMetadata;
+
+	let challengeCreated = false;
+	let challengeData;
+	let code;
 
 	const submitEmailChangeForm = () => {
 		emailLoading = true;
@@ -81,14 +98,54 @@
 		});
 	};
 
-	let currentEmailInput;
-	let currentEmailConfirmInput;
-	let currentPasswordInput;
-	let currentPasswordConfirmInput;
-	let userMetadata;
-	let appMetadata;
+	const enrollFactor = async ({ cancel }) => {
+		cancel();
 
-	const OAUTH_PROVIDERS = ['google', 'github'];
+		const { data, error: err } = await supabaseClient.auth.mfa.enroll({
+			factorType: 'totp'
+		});
+
+		if (err) {
+			toast.error(err.toString(), {
+				duration: 12000
+			});
+			return fail(500, { message: err });
+		}
+
+		$factorStore = data;
+	};
+
+	const createChallenge = async () => {
+		const { data, error: err } = await supabaseClient.auth.mfa.challenge({
+			factorId: $factorStore.id
+		});
+
+		if (err) {
+			console.error(err);
+		}
+
+		challengeCreated = true;
+		challengeData = data;
+	};
+
+	const verifyChallenge = async ({ cancel }) => {
+		cancel();
+
+		const { data, error: err } = await supabaseClient.auth.mfa.verify({
+			factorId: $factorStore.id,
+			challengeId: challengeData.id,
+			code: code.toString()
+		});
+
+		if (err) {
+			// toast.error(err.toString(), {
+			// 	duration: 12000
+			// });
+			fail(500, { message: err });
+		}
+
+		console.log(data);
+	};
 
 	$: ({ currentEmail, session } = data);
 	$: userMetadata = session?.user?.user_metadata;
@@ -126,6 +183,86 @@
 				</div>
 			</section>
 		{/if}
+		<section>
+			<h2>Multi-Faktor-Authentifizierung</h2>
+			<form action="/profil" method="POST" use:enhance={enrollFactor}>
+				<button type="submit" aria-busy={!!$factorStore} disabled={!!$factorStore}
+					>{!!$factorStore ? 'Vorgang läuft' : 'Multi-Faktor-Authentifizierung hinzufügen'}</button
+				>
+			</form>
+
+			{#if $factorStore}
+				{#if $factorStore.totp && !challengeCreated}
+					<div class="grid">
+						<div>
+							<img
+								src={$factorStore.totp.qr_code}
+								alt={$factorStore.totp.uri}
+								style="background-color: #fff; width: 100%;"
+							/>
+						</div>
+						<div>
+							<article style="display: block; margin-bottom: 1rem;">
+								<p>
+									Scannen Sie den QR-Code mit Ihrer Authentifizierungs-App oder geben Sie den unten
+									stehenden Geheimschlüssel ein:
+								</p>
+								<p>
+									<strong>{$factorStore.totp.secret}</strong>
+								</p>
+								<p>
+									<strong>WICHTIG:</strong> Bitte notieren Sie sich den Geheimschlüssel, da Sie ihn gegebenenfalls
+									erneut benötigen, wenn Sie Ihr Gerät wechseln.
+								</p>
+							</article>
+							<p>
+								Fahren Sie fort, wenn Sie die Authentifizierung in Ihrer App eingerichtet haben.
+							</p>
+							<button on:click={() => (challengeCreated = true)}>Weiter</button>
+						</div>
+					</div>
+				{/if}
+			{/if}
+
+			{#if challengeCreated}
+				<article style="display: block; padding-top: 2rem; padding-bottom: 1rem;">
+					<form action="?/createAndVerifyChallenge" method="POST">
+						<p>Geben Sie anschließend den generierten Code aus der Authentifizierungsapp ein</p>
+						<label for="code">
+							Code
+							<input type="number" name="code" id="code" />
+							<input type="hidden" name="factorId" id="factorId" value={$factorStore.id} />
+						</label>
+						<button type="submit">Verifizierung abschließen</button>
+					</form>
+				</article>
+			{/if}
+
+			{#if appMetadata.mfa}
+				<div class="grid">
+					<div>
+						<h3>Aktive Faktoren</h3>
+						<ul>
+							{#each appMetadata.mfa as factor}
+								<li>
+									{factor.type} ({factor.created_at})
+									<form
+										action="?/deleteFactor"
+										method="POST"
+										on:submit|preventDefault={() => {
+											factorLoading = true;
+										}}
+									>
+										<input type="hidden" name="factor_id" value={factor.id} />
+										<button type="submit" disabled={factorLoading}> Entfernen </button>
+									</form>
+								</li>
+							{/each}
+						</ul>
+					</div>
+				</div>
+			{/if}
+		</section>
 		{#if appMetadata.providers.includes('email')}
 			<div class="grid">
 				<div>
