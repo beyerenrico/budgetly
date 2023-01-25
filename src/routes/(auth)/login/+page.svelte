@@ -73,9 +73,17 @@
 				{/if}
 			</label>
 			<button type="submit" aria-busy={loading}>Anmelden</button>
-			<small>
+			<small class="form-footer">
 				<a href="/register"> Sie besitzen noch keinen Account? Jetzt registrieren! </a>
+				<a href="/reset-password"> Password vergessen? </a>
 			</small>
 		</form>
 	</div>
 </main>
+
+<style lang="scss">
+	.form-footer {
+		display: flex;
+		justify-content: space-between;
+	}
+</style>

@@ -6,6 +6,7 @@
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
+	import url from '$lib/utils/url';
 	import '@picocss/pico';
 
 	onMount(() => {
@@ -41,6 +42,28 @@
 	const hideMobileMenu = () => {
 		mobileMenuVisible = false;
 	};
+
+	if ($url?.hash) {
+		const hashParams = $url?.hash.split('&').reduce(function (res, item) {
+			let parts = item.split('=');
+			res[parts[0].replace('#', '')] = parts[1].replaceAll('+', ' ');
+			return res;
+		}, {});
+
+		if (hashParams?.message) {
+			const message = decodeURIComponent(hashParams.message);
+			toast.success(message, {
+				duration: 10000
+			});
+		}
+
+		if (hashParams?.error_description) {
+			const error = decodeURIComponent(hashParams.error_description);
+			toast.error(error, {
+				duration: 10000
+			});
+		}
+	}
 </script>
 
 <nav role="menu" class="nav-desktop">

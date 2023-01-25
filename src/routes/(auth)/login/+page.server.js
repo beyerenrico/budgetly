@@ -7,8 +7,6 @@ import { authSchema } from '$lib/utils/schema';
 export async function load(event) {
 	const session = await getServerSession(event);
 
-	const { locals } = event;
-
 	if (session) {
 		throw redirect(303, '/');
 	}

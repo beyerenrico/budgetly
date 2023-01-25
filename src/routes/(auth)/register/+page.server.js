@@ -4,6 +4,15 @@ import { getServerSession } from '@supabase/auth-helpers-sveltekit';
 import { prisma } from '$lib/server/prisma';
 import { authSchema } from '$lib/utils/schema';
 
+/** @type {import('./$types').PageLoad} */
+export async function load(event) {
+	const session = await getServerSession(event);
+
+	if (session) {
+		throw redirect(303, '/');
+	}
+}
+
 /** @type {import('./$types').Actions} */
 export const actions = {
 	register: async ({ request, locals }) => {
@@ -54,12 +63,3 @@ export const actions = {
 		throw redirect(303, '/register/success');
 	}
 };
-
-/** @type {import('./$types').PageLoad} */
-export async function load(event) {
-	const session = await getServerSession(event);
-
-	if (session) {
-		throw redirect(303, '/');
-	}
-}

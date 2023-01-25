@@ -1,4 +1,4 @@
-import { changeEmailSchema } from '$lib/utils/schema';
+import { changeEmailSchema, changePasswordSchema } from '$lib/utils/schema';
 import { fail } from '@sveltejs/kit';
 
 /** @type {import('./$types').PageLoad} */
@@ -23,17 +23,51 @@ export const actions = {
 				};
 			});
 
-			console.log(errors);
-
 			return fail(400, { error: true, errors });
 		}
 
-		const { user, error: err } = await locals.sb.auth.updateUser(validate.data);
+		const { error: err } = await locals.sb.auth.updateUser({ email: validate.data.email });
 
 		if (err) {
 			if (err instanceof AuthApiError && err.status === 400) {
 				return fail(400, {
 					error: 'Ungültige E-Mail-Adresse'
+				});
+			}
+
+			return fail(500, {
+				error: 'Serverfehler. Bitte versuchen Sie es später nochmal.'
+			});
+		}
+
+		return {
+			status: 201
+		};
+	},
+	changePassword: async ({ request, locals }) => {
+		const body = Object.fromEntries(await request.formData());
+
+		const validate = changePasswordSchema.safeParse(body);
+
+		if (!validate.success) {
+			const errors = validate.error.errors.map((error) => {
+				return {
+					field: error.path[0],
+					message: error.message
+				};
+			});
+
+			console.log(errors);
+
+			return fail(400, { error: true, errors });
+		}
+
+		const { error: err } = await locals.sb.auth.updateUser({ password: validate.data.password });
+
+		if (err) {
+			if (err instanceof AuthApiError && err.status === 400) {
+				return fail(400, {
+					error: 'Ungültiges Passwort'
 				});
 			}
 
