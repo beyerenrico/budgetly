@@ -9,13 +9,14 @@
 	const submitRegister = () => {
 		loading = true;
 		return async ({ result, update }) => {
+			console.log(result);
 			switch (result.type) {
 				case 'redirect':
 					toast.success('Benutzerkonto erstellt');
 					await update();
 					break;
 				case 'failure':
-					toast.error('Ungültige Daten', {
+					toast.error(result.data.message, {
 						duration: 6000
 					});
 					await update();

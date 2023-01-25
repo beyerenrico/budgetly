@@ -19,7 +19,7 @@
 					await update();
 					break;
 				case 'failure':
-					toast.error('Es gibt ungültige Angaben', {
+					toast.error(result.data.message, {
 						duration: 6000
 					});
 					await update();

@@ -15,7 +15,7 @@
 					await update();
 					break;
 				case 'failure':
-					toast.error('Ungültige Anmeldedaten', {
+					toast.error(result.data.message, {
 						duration: 6000
 					});
 					await update();
