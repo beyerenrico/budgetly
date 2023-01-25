@@ -221,4 +221,12 @@
 	header {
 		text-align: center;
 	}
+
+	button[type='submit'] {
+		margin-bottom: 0;
+	}
+
+	select {
+		margin-bottom: 0;
+	}
 </style>

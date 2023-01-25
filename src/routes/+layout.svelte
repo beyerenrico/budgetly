@@ -113,6 +113,17 @@
 					</ul>
 				</details>
 			</li>
+			{#if data.session.user.user_metadata.avatar_url}
+				<li>
+					<img
+						height="40px"
+						width="40px"
+						src={data.session.user.user_metadata.avatar_url}
+						alt={data.session.user.user_metadata.name}
+						class="round"
+					/>
+				</li>
+			{/if}
 		{:else}
 			<li>
 				<a href="/login" role="button" class="medium secondary">Anmelden</a>

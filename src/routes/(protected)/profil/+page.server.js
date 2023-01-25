@@ -4,7 +4,8 @@ import { fail } from '@sveltejs/kit';
 /** @type {import('./$types').PageLoad} */
 export async function load({ locals }) {
 	return {
-		currentEmail: locals.session.user.email
+		currentEmail: locals.session.user.email,
+		session: locals.session
 	};
 }
 
