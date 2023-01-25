@@ -75,25 +75,11 @@ export const actions = {
 				}
 			});
 		} catch (err) {
-			console.log('Error: ' + err);
 			return fail(500, {
-				message: 'Item could not be created.'
+				message: 'Posten konnte nicht erstellt werden.'
 			});
 		}
 
 		throw redirect(303, '/posten');
 	}
 };
-
-/** @type {import('./$types').PageLoad} */
-export async function load({ locals }) {
-	const { user } = locals.session;
-
-	return {
-		months: await prisma.month.findMany(),
-		categories: await prisma.category.findMany(),
-		budgetBooks: await prisma.budgetBook.findMany({
-			where: { userId: user.id }
-		})
-	};
-}

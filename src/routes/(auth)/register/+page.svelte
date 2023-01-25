@@ -9,7 +9,6 @@
 	const submitRegister = () => {
 		loading = true;
 		return async ({ result, update }) => {
-			console.log(result);
 			switch (result.type) {
 				case 'redirect':
 					toast.success('Benutzerkonto erstellt');

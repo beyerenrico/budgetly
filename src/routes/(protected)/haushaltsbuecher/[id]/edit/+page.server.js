@@ -53,7 +53,6 @@ export const actions = {
 				}
 			});
 		} catch (err) {
-			console.log('Error: ' + err);
 			return fail(500, {
 				message: 'Budget Book could not be updated.'
 			});
@@ -69,7 +68,6 @@ export const actions = {
 				}
 			});
 		} catch (err) {
-			console.log('Error: ' + err);
 			return fail(500, {
 				message: 'Budget Book could not be deleted.'
 			});
@@ -78,14 +76,3 @@ export const actions = {
 		throw redirect(303, '/haushaltsbuecher');
 	}
 };
-
-/** @type {import('./$types').PageLoad} */
-export async function load({ params }) {
-	return {
-		budgetBook: await prisma.budgetBook.findUnique({
-			where: {
-				id: params.id
-			}
-		})
-	};
-}

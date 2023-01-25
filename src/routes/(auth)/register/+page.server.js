@@ -46,7 +46,6 @@ export const actions = {
 				}
 			});
 		} catch (err) {
-			console.log(err);
 			return fail(500, {
 				message: 'Serverfehler. Bitte versuchen Sie es später nochmal.'
 			});

@@ -51,7 +51,6 @@ export const actions = {
 				}
 			});
 		} catch (err) {
-			console.log('Error: ' + err);
 			return fail(500, {
 				message: 'Category could not be updated.'
 			});
@@ -67,7 +66,6 @@ export const actions = {
 				}
 			});
 		} catch (err) {
-			console.log('Error: ' + err);
 			return fail(500, {
 				message: 'Category could not be deleted.'
 			});
@@ -76,14 +74,3 @@ export const actions = {
 		throw redirect(303, '/kategorien');
 	}
 };
-
-/** @type {import('./$types').PageLoad} */
-export async function load({ params }) {
-	return {
-		category: await prisma.category.findUnique({
-			where: {
-				id: params.id
-			}
-		})
-	};
-}

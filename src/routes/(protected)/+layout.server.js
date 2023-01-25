@@ -3,9 +3,11 @@ import { redirect } from '@sveltejs/kit';
 
 /** @type {import('./$types').PageLoad} */
 export async function load(event) {
-	const session = await getServerSession(event);
+	const { locals } = event;
 
-	if (!session) {
-		throw redirect(303, '/register');
+	const serverSession = await getServerSession(event);
+
+	if (!locals.session || !serverSession) {
+		throw redirect(303, '/login');
 	}
 }

@@ -97,7 +97,6 @@ export const actions = {
 				}
 			});
 		} catch (err) {
-			console.log('Error: ' + err);
 			return fail(500, {
 				message: 'Item could not be updated.'
 			});
@@ -113,7 +112,6 @@ export const actions = {
 				}
 			});
 		} catch (err) {
-			console.log('Error: ' + err);
 			return fail(500, {
 				message: 'Category could not be deleted.'
 			});
@@ -122,26 +120,3 @@ export const actions = {
 		throw redirect(303, '/kategorien');
 	}
 };
-
-/** @type {import('./$types').PageLoad} */
-export async function load({ params, locals }) {
-	const { user } = locals.session;
-
-	return {
-		months: await prisma.month.findMany(),
-		categories: await prisma.category.findMany(),
-		budgetBooks: await prisma.budgetBook.findMany({
-			where: { userId: user.id }
-		}),
-		item: await prisma.item.findUnique({
-			where: {
-				id: params.id
-			},
-			include: {
-				budgetBook: true,
-				category: true,
-				months: true
-			}
-		})
-	};
-}
