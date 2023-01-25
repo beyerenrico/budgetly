@@ -79,3 +79,9 @@
 		</form>
 	</div>
 </main>
+
+<style>
+	.container {
+		max-width: 600px;
+	}
+</style>

@@ -1,6 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import { getServerSession } from '@supabase/auth-helpers-sveltekit';
 import { prisma } from '$lib/server/prisma';
+import { createPublicUserIfNotExisting } from '$lib/utils/createPublicUserIfNotExisting';
 
 /** @type {import('./$types').PageLoad} */
 export async function load(event) {
@@ -11,6 +12,8 @@ export async function load(event) {
 	if (!locals.session || !serverSession) {
 		throw redirect(303, '/login');
 	}
+
+	await createPublicUserIfNotExisting(serverSession.user);
 
 	const { user } = locals.session;
 

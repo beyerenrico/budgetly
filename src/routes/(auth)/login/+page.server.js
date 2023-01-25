@@ -12,9 +12,33 @@ export async function load(event) {
 	}
 }
 
+const OAUTH_PROVIDERS = ['google', 'github'];
+
 /** @type {import('./$types').Actions} */
 export const actions = {
-	login: async ({ request, locals }) => {
+	login: async ({ request, locals, url }) => {
+		const provider = url.searchParams.get('provider');
+
+		if (provider) {
+			if (!OAUTH_PROVIDERS.includes(provider)) {
+				return fail(400, {
+					error: 'Ungültiger Anbieter'
+				});
+			}
+
+			const { data, error: err } = await locals.sb.auth.signInWithOAuth({
+				provider
+			});
+
+			if (err) {
+				return fail(500, {
+					message: 'Serverfehler. Bitte versuchen Sie es später nochmal.'
+				});
+			}
+
+			throw redirect(303, data.url);
+		}
+
 		const body = Object.fromEntries(await request.formData());
 
 		const validate = authSchema.safeParse(body);

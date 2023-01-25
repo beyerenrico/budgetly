@@ -1,6 +1,9 @@
 <script>
 	import { enhance } from '$app/forms';
 	import toast from 'svelte-french-toast';
+	import FaFacebookF from 'svelte-icons/fa/FaFacebookF.svelte';
+	import FaGoogle from 'svelte-icons/fa/FaGoogle.svelte';
+	import FaGithub from 'svelte-icons/fa/FaGithub.svelte';
 
 	export let form;
 
@@ -75,8 +78,31 @@
 			<button type="submit" aria-busy={loading}>Anmelden</button>
 			<small class="form-footer">
 				<a href="/register"> Sie besitzen noch keinen Account? Jetzt registrieren! </a>
-				<a href="/reset-password"> Password vergessen? </a>
+				<a href="/reset-password"> Passwort vergessen? </a>
 			</small>
+		</form>
+
+		<hr />
+
+		<form class="grid" method="POST">
+			<div>
+				<button
+					formaction="?/login&provider=google"
+					class="small icon"
+					data-tooltip="Mit Google anmelden"
+				>
+					<FaGoogle />
+				</button>
+			</div>
+			<div>
+				<button
+					formaction="?/login&provider=github"
+					class="small icon"
+					data-tooltip="Mit Github anmelden"
+				>
+					<FaGithub />
+				</button>
+			</div>
 		</form>
 	</div>
 </main>
@@ -85,5 +111,17 @@
 	.form-footer {
 		display: flex;
 		justify-content: space-between;
+	}
+
+	hr {
+		margin: 2rem 0;
+	}
+
+	.icon {
+		height: 42px;
+	}
+
+	.container {
+		max-width: 600px;
 	}
 </style>
