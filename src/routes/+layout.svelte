@@ -23,11 +23,11 @@
 	export let data;
 	export let mobileMenuVisible = false;
 
-	const submitLogout = async ({ request, cancel }) => {
+	const submitLogout = async ({ cancel }) => {
 		const { error } = await supabaseClient.auth.signOut();
 
 		if (error) {
-			console.error(error);
+			toast.success('Es ist ein Fehler aufgetreten');
 		}
 
 		toast.success('Erfolgreich abgemeldet');
@@ -45,7 +45,7 @@
 
 <nav role="menu" class="nav-desktop">
 	<ul>
-		<li>
+		<li style="padding-top: 0.5rem; padding-bottom: 0.5rem;">
 			<a href="/" class="logo">
 				<strong>Budget.ly</strong>
 			</a>
@@ -73,9 +73,22 @@
 		{/if}
 		{#if data.session}
 			<li>
-				<form action="/logout" method="POST" use:enhance={submitLogout}>
-					<button type="submit" class="medium danger">Abmelden</button>
-				</form>
+				<details role="list" dir="rtl">
+					<!-- svelte-ignore a11y-no-redundant-roles -->
+					<summary aria-haspopup="listbox" role="button" class="medium">
+						{data.session.user.email}
+					</summary>
+					<ul role="listbox">
+						<li>
+							<a href="/profil">Profil</a>
+						</li>
+						<li>
+							<form action="/logout" method="POST" use:enhance={submitLogout}>
+								<button type="submit" class="medium danger">Abmelden</button>
+							</form>
+						</li>
+					</ul>
+				</details>
 			</li>
 		{:else}
 			<li>
@@ -125,6 +138,9 @@
 			{/if}
 			{#if data.session}
 				<li>
+					<a href="/profil" role="button" class="medium w-100">Profil</a>
+				</li>
+				<li>
 					<form action="/logout" method="POST" use:enhance={submitLogout}>
 						<button type="submit" class="medium danger" on:click={hideMobileMenu}>Abmelden</button>
 					</form>
@@ -150,7 +166,7 @@
 	@import '../app';
 
 	.logo {
-		font-size: 2rem;
+		font-size: 1.5rem;
 	}
 
 	form {
@@ -158,6 +174,11 @@
 	}
 
 	.items-desktop {
+		li {
+			padding-top: 0.5rem;
+			padding-bottom: 0.5rem;
+		}
+
 		a:not([role='button']) {
 			color: #fff;
 
@@ -183,6 +204,7 @@
 		left: 0;
 		transform: translateY(calc(-100% - 80px));
 		transition: transform 0.2s ease-out;
+		z-index: 1;
 
 		&.show {
 			transform: translateY(0);
@@ -207,5 +229,9 @@
 		position: relative;
 		z-index: 10;
 		background-color: var(--background-color);
+	}
+
+	summary[role='button'] {
+		align-items: center;
 	}
 </style>
