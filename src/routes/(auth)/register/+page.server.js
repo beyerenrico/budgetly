@@ -22,7 +22,7 @@ export const actions = {
 			return fail(400, { error: true, errors });
 		}
 
-		const { error: err } = await locals.sb.auth.signUp(validate.data);
+		const { data, error: err } = await locals.sb.auth.signUp(validate.data);
 
 		if (err) {
 			if (err instanceof AuthApiError && err.status === 400) {
@@ -48,7 +48,7 @@ export const actions = {
 		} catch (err) {
 			console.log(err);
 			return fail(500, {
-				message: 'User could not be created.'
+				message: 'Serverfehler. Bitte versuchen Sie es später nochmal.'
 			});
 		}
 
