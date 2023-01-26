@@ -157,6 +157,10 @@ h2.icon {
 	display: inline-flex;
 	align-items: center;
 	gap: 1rem;
+
+	a {
+		margin-top: 0;
+	}
 }
 
 table p {
