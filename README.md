@@ -1,4 +1,8 @@
-# create-svelte
+# budgetly - SvelteKit x Supabase x Pico.css
+
+This version of my budgeting app is built with SvelteKit, Supabase, and Pico.css
+
+## Start developing
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
 
